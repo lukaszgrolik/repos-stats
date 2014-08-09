@@ -1,0 +1,9 @@
+{
+  "name": "repos-stats",
+  "dependencies": {
+    "async": "~0.9.0",
+    "firebase": "~1.0.19",
+    "angularfire": "~0.8.0",
+    "angular": "~1.2.21"
+  }
+}

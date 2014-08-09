@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp" ng-controller="MainController">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+	<script src="bower_components/async/lib/async.js"></script>
+	<script src="bower_components/angular/angular.js"></script>
+	<script src="bower_components/firebase/firebase.js"></script>
+	<script src="bower_components/angularfire/dist/angularfire.js"></script>
+
+	<script src="js/app.js"></script>
+	<script src="js/MainController.js"></script>
+	<script src="js/Repo.js"></script>
+	<script src="js/RateLimit.js"></script>
+	<script src="js/UserRecentRequests.js"></script>
+</head>
+<body>
+
+<!-- <ul>
+	<li><a href="#">Home</a></li>
+	<li><a href="#">FAQ</a></li>
+</ul> -->
+
+<div ng-show="loading">Loading...</div>
+
+<h3>Comparisons examples</h3>
+
+<ul>
+	<li ng-repeat="repos in comparisonsExamples">
+		<span ng-repeat="repo in repos">{{repo}}, </span>
+		<button ng-click="loadStats(repos)" ng-disabled="loading">Load</button>
+	</li>
+</ul>
+
+<h3>Your recent comparisons</h3>
+
+<ul>
+	<li ng-repeat="comp in recentComparisons">
+		<span ng-repeat="repo in comp">{{repo}}, </span>
+		<button ng-click="loadStats(comp)" ng-disabled="loading">Load</button>
+	</li>
+</ul>
+
+<!-- <h3>Users recently compared</h3>
+
+<ul>
+	<li ng-repeat="comp in globalRecentComparisons">
+		<span ng-repeat="repo in comp">{{repo}}, </span>
+		<button ng-click="loadStats(comp)" ng-disabled="loading">Load</button>
+	</li>
+</ul> -->
+
+<h3>Compare repos</h3>
+
+<ul>
+	<li ng-repeat="selectedRepo in selectedRepos">
+		<span>{{selectedRepo}}</span>
+		<button ng-click="removeRepo(selectedRepo)">Remove</button>
+	</li>
+</ul>
+
+<div>
+	<form ng-submit="loadStatsByForm()">
+		<label for="repos-names-field">list of owner/repo separated by comma</label>
+		<input ng-model="reposNames" type="text" id="repos-names-field">
+		<input type="submit" value="Load stats" ng-disabled="loading">
+	</form>
+</div>
+
+<div ng-show="repos.length">
+	<h3>Stats</h3>
+
+	<table border="1">
+		<tr>
+			<th><input ng-model="repoFilter.name" type="text" placeholder="Repo"></th>
+			<th>Description</th>
+			<th ng-click="sortRepoByField('createdAt')">Create date</th>
+			<th ng-click="sortRepoByField('updatedAt')">Last update</th>
+			<th ng-click="sortRepoByField('pushedAt')">Last push</th>
+			<th>Homepage</th>
+			<th ng-click="sortRepoByField('watchersCount')">Watchers</th>
+			<th ng-click="sortRepoByField('starsCount')">Stars</th>
+			<th ng-click="sortRepoByField('forksCount')">Forks</th>
+			<th ng-click="sortRepoByField('openIssuesCount')">Open issues</th>
+		</tr>
+
+		<tr ng-repeat="repo in repos | filter:repoFilter | orderBy:repoSortField:repoSortOrder">
+			<td>{{repo.name}}</td>
+			<td>{{repo.description}}</td>
+			<td>{{repo.createdAt}}</td>
+			<td>{{repo.updatedAt}}</td>
+			<td>{{repo.pushedAt}}</td>
+			<td><a ng-href="{{obtainLink(repo.homepage)}}">{{repo.homepage}}</a></td>
+			<td>{{repo.watchersCount}}</td>
+			<td>{{repo.starsCount}}</td>
+			<td>{{repo.forksCount}}</td>
+			<td>{{repo.openIssuesCount}}</td>
+		</tr>
+	</table>
+
+	<h3>Limits</h3>
+
+	<table border="1" ng-show="rateLimit">
+		<tr>
+			<th>Core limit</th>
+			<th>Core remaining</th>
+			<th>Core reset</th>
+			<!-- <th>Search limit</th> -->
+			<!-- <th>Search remaining</th> -->
+			<!-- <th>Search reset</th> -->
+		</tr>
+
+		<tr>
+			<td>{{rateLimit.coreLimit}}</td>
+			<td>{{rateLimit.coreRemaining}}</td>
+			<td>{{rateLimit.coreReset}}</td>
+			<!-- <td>{{rateLimit.searchLimit}}</td> -->
+			<!-- <td>{{rateLimit.searchRemaining}}</td> -->
+			<!-- <td>{{rateLimit.searchReset}}</td> -->
+		</tr>
+	</table>
+</div>
+
+</body>
+</html>
