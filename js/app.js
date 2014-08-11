@@ -1,1 +1,1 @@
-var app = angular.module('myApp', ['firebase'], function() {});
+var app = angular.module('myApp', ['firebase', 'angles'], function() {});

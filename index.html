@@ -4,10 +4,14 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 
+	<link rel="stylesheet" href="css/main.css">
+
 	<script src="bower_components/async/lib/async.js"></script>
 	<script src="bower_components/angular/angular.js"></script>
 	<script src="bower_components/firebase/firebase.js"></script>
 	<script src="bower_components/angularfire/dist/angularfire.js"></script>
+	<script src="bower_components/chartjs/Chart.min.js"></script>
+	<script src="bower_components/angles/angles.js"></script>
 
 	<script src="js/app.js"></script>
 	<script src="js/MainController.js"></script>
@@ -22,25 +26,96 @@
 	<li><a href="#">FAQ</a></li>
 </ul> -->
 
+<div ng-show="connectionError">
+	<p>There is a connection problem.</p>
+</div>
+
+<div ng-show="limitError">
+	<p>You exceeded GitHub API request limit. Wait until to {{rateLimit.coreReset}} to reset limit.</p>
+</div>
+
+<h3>Compare repos</h3>
+
+<div>
+	<form ng-submit="loadStatsByForm()">
+		<!-- <label for="repos-names-field">list of owner/repo separated by comma</label> -->
+		<div>
+			<input ng-model="reposNames" type="text" id="repos-names-field">
+		</div>
+
+		<div>
+			<span>Examples:</span>
+			<ul>
+				<li ng-repeat="repos in comparisonsExamples">
+					<span>
+						<ul class="requests-examples-repos-list">
+							<li ng-repeat="repo in repos" ng-click="setRepos(repos)">{{repo}}</li>
+						</ul>
+					</span>
+				</li>
+			</ul>
+		</div>
+
+		<!-- <div ng-show="Object.keys(recentComparisons).length"> -->
+		<div>
+			<span>Your last requests:</span>
+			<ul>
+				<li ng-repeat="comp in recentComparisons">
+					<span ng-repeat="repo in comp" ng-click="setRepos(comp)">{{repo}}, </span>
+				</li>
+			</ul>
+		</div>
+
+		<div>
+			<input ng-model="requestReposForm.commits" type="checkbox" name="" id="request-repos-form-commits">
+			<label for="request-repos-form-commits">Retrieve number of commits (last year only) - requires 1 more request</label>
+		</div>
+
+		<div>
+			<p>Requests per repo: {{requestsPerRepo}}</p>
+			<p>Total requests: {{totalRequests}}</p>
+		</div>
+
+		<div>
+			<p>Remaining requests: {{rateLimit.coreRemaining}}/{{rateLimit.coreLimit}}</p>
+			<p>Limit will be reset at {{rateLimit.coreReset}}</p>
+		</div>
+
+		<div>
+			<ul>
+				<li ng-repeat="(key, val) in requestReposForm.errors.fields">field: {{key}}, error type: {{val.type}}</li>
+			</ul>
+		</div>
+
+		<div>
+			<input type="submit" value="Load stats" ng-disabled="loading">
+		</div>
+
+		<div>
+			<ul>
+				<li ng-repeat="(key, val) in requestReposForm.errors.requests">error: {{key}}</li>
+			</ul>
+		</div>
+	</form>
+</div>
+
 <div ng-show="loading">Loading...</div>
 
-<h3>Comparisons examples</h3>
+<!-- <h3>Comparisons examples</h3> -->
 
-<ul>
+<!-- <ul>
 	<li ng-repeat="repos in comparisonsExamples">
-		<span ng-repeat="repo in repos">{{repo}}, </span>
-		<button ng-click="loadStats(repos)" ng-disabled="loading">Load</button>
+		<span ng-repeat="repo in repos" ng-click="setRepos(repos)">{{repo}}, </span>
 	</li>
-</ul>
+</ul> -->
 
-<h3>Your recent comparisons</h3>
+<!-- <h3>Your recent comparisons</h3> -->
 
-<ul>
+<!-- <ul>
 	<li ng-repeat="comp in recentComparisons">
-		<span ng-repeat="repo in comp">{{repo}}, </span>
-		<button ng-click="loadStats(comp)" ng-disabled="loading">Load</button>
+		<span ng-repeat="repo in comp" ng-click="setRepos(comp)">{{repo}}, </span>
 	</li>
-</ul>
+</ul> -->
 
 <!-- <h3>Users recently compared</h3>
 
@@ -51,22 +126,7 @@
 	</li>
 </ul> -->
 
-<h3>Compare repos</h3>
 
-<ul>
-	<li ng-repeat="selectedRepo in selectedRepos">
-		<span>{{selectedRepo}}</span>
-		<button ng-click="removeRepo(selectedRepo)">Remove</button>
-	</li>
-</ul>
-
-<div>
-	<form ng-submit="loadStatsByForm()">
-		<label for="repos-names-field">list of owner/repo separated by comma</label>
-		<input ng-model="reposNames" type="text" id="repos-names-field">
-		<input type="submit" value="Load stats" ng-disabled="loading">
-	</form>
-</div>
 
 <div ng-show="repos.length">
 	<h3>Stats</h3>
@@ -79,6 +139,8 @@
 			<th ng-click="sortRepoByField('updatedAt')">Last update</th>
 			<th ng-click="sortRepoByField('pushedAt')">Last push</th>
 			<th>Homepage</th>
+			<th ng-show="requestReposForm.commits">Commits</th>
+			<th ng-show="requestReposForm.commits">Contributors</th>
 			<th ng-click="sortRepoByField('watchersCount')">Watchers</th>
 			<th ng-click="sortRepoByField('starsCount')">Stars</th>
 			<th ng-click="sortRepoByField('forksCount')">Forks</th>
@@ -92,6 +154,8 @@
 			<td>{{repo.updatedAt}}</td>
 			<td>{{repo.pushedAt}}</td>
 			<td><a ng-href="{{obtainLink(repo.homepage)}}">{{repo.homepage}}</a></td>
+			<td ng-show="requestReposForm.commits">{{repo.commitsCount}}</td>
+			<td ng-show="requestReposForm.commits">{{repo.contributorsCount}}</td>
 			<td>{{repo.watchersCount}}</td>
 			<td>{{repo.starsCount}}</td>
 			<td>{{repo.forksCount}}</td>
@@ -99,27 +163,44 @@
 		</tr>
 	</table>
 
-	<h3>Limits</h3>
+<!-- 	<h3>Limits</h3>
 
 	<table border="1" ng-show="rateLimit">
 		<tr>
 			<th>Core limit</th>
 			<th>Core remaining</th>
 			<th>Core reset</th>
-			<!-- <th>Search limit</th> -->
-			<!-- <th>Search remaining</th> -->
-			<!-- <th>Search reset</th> -->
 		</tr>
 
 		<tr>
 			<td>{{rateLimit.coreLimit}}</td>
 			<td>{{rateLimit.coreRemaining}}</td>
 			<td>{{rateLimit.coreReset}}</td>
-			<!-- <td>{{rateLimit.searchLimit}}</td> -->
-			<!-- <td>{{rateLimit.searchRemaining}}</td> -->
-			<!-- <td>{{rateLimit.searchReset}}</td> -->
 		</tr>
-	</table>
+	</table> -->
+
+	<div ng-show="requestReposForm.commits">
+		<h3>Commits</h3>
+
+		<canvas barchart options="myChartOptions" data="charts.commits" width="500" height="300"></canvas>
+	</div>
+
+
+	<h3>Watchers</h3>
+
+	<canvas barchart options="myChartOptions" data="charts.watchers" width="500" height="300"></canvas>
+
+	<h3>Stars</h3>
+
+	<canvas barchart options="myChartOptions" data="charts.stars" width="500" height="300"></canvas>
+
+	<h3>Forks</h3>
+
+	<canvas barchart options="myChartOptions" data="charts.forks" width="500" height="300"></canvas>
+
+	<h3>Open issues</h3>
+
+	<canvas barchart options="myChartOptions" data="charts.openIssues" width="500" height="300"></canvas>
 </div>
 
 </body>

@@ -1,6 +1,8 @@
 app.service('UserRecentRequests', ['$firebase', function($firebase) {
 
-	this.requests = JSON.parse(localStorage.getItem('a')) || [];
+	this.REPOS_REQUESTS_STORAGE_KEY = 'reposRequests'
+	this.REPOS_LIMIT = 5;
+	this.requests = JSON.parse(localStorage.getItem(this.REPOS_REQUESTS_STORAGE_KEY)) || [];
 	this.globalRequests = [];
 
 	this.add = function(reposNames) {
@@ -14,9 +16,11 @@ app.service('UserRecentRequests', ['$firebase', function($firebase) {
 
 		this.requests.unshift(reposNames);
 
-		localStorage.setItem('a', JSON.stringify(this.requests));
+		if (this.requests.length > this.REPOS_LIMIT) {
+			this.requests.length = this.REPOS_LIMIT;
+		}
+
+		localStorage.setItem(this.REPOS_REQUESTS_STORAGE_KEY, JSON.stringify(this.requests));
 	}
-
-
 
 }]);

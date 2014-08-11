@@ -1,0 +1,60 @@
+*
+{
+	padding: 0;
+	margin: 0;
+}
+
+.requests-examples-list
+{
+
+}
+
+.requests-examples-list > li:before
+{
+	content: ', ';
+}
+
+.requests-examples-list > li:first-child:before
+{
+	content: '';
+}
+
+.requests-examples-list > li
+{
+	display: inline-block;
+}
+
+.requests-examples-list > li > span
+{
+/*	cursor: pointer;
+	background: #eee;
+	padding: .25rem;
+	border: 1px solid #ccc;*/
+	display: inline-block;
+}
+
+.requests-examples-list > li > span:hover
+{
+	/*background: #e7e7e7;*/
+}
+
+
+.requests-examples-repos-list
+{
+	display: inline-block;
+}
+
+.requests-examples-repos-list > li
+{
+	display: inline-block;
+}
+
+.requests-examples-repos-list > li:before
+{
+	content: ', ';
+}
+
+.requests-examples-repos-list > li:first-child:before
+{
+	content: '';
+}
