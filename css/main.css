@@ -1,8 +1,259 @@
 *
 {
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: inherit;
+	box-sizing: border-box;
 	padding: 0;
 	margin: 0;
 }
+
+li
+{
+	list-style-type: none;
+}
+
+input
+{
+	border: 0;
+}
+
+/**/
+
+html {
+	font-family: Raleway;
+}
+
+/**/
+
+.ca
+{
+	padding: 0 1rem;
+	margin: 0 auto;
+}
+
+.ca-1
+{
+	max-width: 1200px;
+}
+
+/**/
+
+.table-1
+{
+	border-collapse: collapse;
+}
+
+.table-1 td,
+.table-1 th
+{
+	padding: .5rem 1rem;
+	border: 1px solid #ddd;
+}
+
+.table-1 th
+{
+	font-weight: bold;
+}
+
+/**/
+
+.request-repos-form-area
+{
+	background: #ddd;
+}
+
+.request-repos-form-input-area
+{
+	background: #3498DB;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+}
+
+.request-repos-form-submit-area
+{
+	background: #2980B9;
+}
+
+/**/
+
+.request-repos-form-input
+{
+	color: #7F8C8D;
+	font-family: monospace;
+	font-size: 1.5rem;
+	padding: .5rem;
+	width: 100%;
+	outline: 0;
+	display: block;
+}
+
+/**/
+
+.repo-list-button-area
+{
+	color: #fff;
+	margin-top: 1rem;
+	display: flex;
+}
+
+.repo-list-button-container
+{
+	font-size: 0.8rem;
+}
+
+.repo-list-button-container:not(:first-child)
+{
+	margin-left: 1rem;
+}
+
+/**/
+
+.repo-list-button-area-heading
+{
+	font-weight: bold;
+	margin-bottom: .5rem;
+}
+
+/**/
+
+.repo-list-button-wrapper-list
+{
+
+}
+
+.repo-list-button-wrapper
+{
+
+}
+
+.repo-list-button-wrapper-list .repo-list-button-wrapper:not(:first-child)
+{
+	margin-top: .25rem;
+}
+
+.repo-list-button
+{
+	cursor: pointer;
+	background: rgba(255, 255, 255, .2);
+	font-family: monospace;
+	padding: .15rem .3rem;
+	display: inline-block;
+}
+
+.repo-list-button:hover
+{
+	background: rgba(255, 255, 255, .3)
+}
+
+
+.request-repos-form-submit-area
+{
+
+}
+
+.request-repos-form-submit-area-content
+{
+	color: #fff;
+	display: flex;
+	/*align-items: stretch;*/
+}
+
+.request-repos-form-submit-area-limit-info-area
+{
+	padding: 1rem 0;
+}
+
+.request-repos-form-submit-area-button-area
+{
+
+	margin-left: auto;
+	/*position: relative;*/
+}
+
+/**/
+
+.request-repos-form-submit
+{
+	cursor: pointer;
+	background: #2C3E50;
+	color: #fff;
+	font-size: 1.5rem;
+	padding: 1.5rem;
+	outline: 0;
+}
+
+.request-repos-form-submit:hover
+{
+	background: #34495E;
+}
+
+/**/
+
+.table-area
+{
+	padding: 3rem 0;
+}
+
+/**/
+
+.charts-area
+{
+	background: #ECF0F1;
+	padding: 2rem;
+}
+
+/**/
+
+.chart-container-list
+{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.chart-container
+{
+	background: #fff;
+	margin: 1rem;
+}
+
+.chart-content
+{
+	padding: 1rem;
+}
+
+/**/
+
+.charts-area-heading
+{
+	/*background: #1ABC9C;*/
+	color: #fff;
+	font-weight: bold;
+	text-align: center;
+	padding: .5rem 1rem;
+	margin-bottom: 1rem;
+}
+
+/**/
+
+.faq-area
+{
+	background: #1ABC9C;
+	color: #fff;
+}
+
+/**/
+
+.footer-area
+{
+	background: #34495E;
+	color: #fff;
+}
+
+/**/
+
+
 
 .requests-examples-list
 {

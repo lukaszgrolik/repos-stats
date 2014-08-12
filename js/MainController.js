@@ -8,7 +8,14 @@ app.controller('MainController', ['$scope', '$http', 'Repo', 'RateLimit', 'UserR
 
 	$scope.repos = [];
 	$scope.reposNames = '';
+	$scope.reposNamesCount = obtainReposNamesCount();
 	$scope.repoSortOrder = false;
+
+	$scope.$watch(function() {
+		return $scope.reposNames;
+	}, function() {
+		$scope.reposNamesCount = obtainReposNamesCount();
+	})
 
 	$scope.connectionError = false;
 	$scope.limitError = false;
@@ -19,25 +26,29 @@ app.controller('MainController', ['$scope', '$http', 'Repo', 'RateLimit', 'UserR
 	$scope.requestReposForm.errors.requests = {};
 
 	$scope.stats = [
-		{
-			name: 'commits',
-			label: 'Commits'
-		},
+		// {
+		// 	name: 'commits',
+		// 	label: 'Commits'
+		// },
 		{
 			name: 'watchers',
 			label: 'Watchers',
+			color: '#1ABC9C'
 		},
 		{
 			name: 'stars',
-			label: 'Stars'
+			label: 'Stars',
+			color: '#2ECC71'
 		},
 		{
 			name: 'forks',
-			label: 'Forks'
+			label: 'Forks',
+			color: '#3498DB'
 		},
 		{
 			name: 'openIssues',
-			label: 'Open issues'
+			label: 'Open issues',
+			color: '#9B59B6'
 		}
 	];
 
@@ -76,11 +87,12 @@ app.controller('MainController', ['$scope', '$http', 'Repo', 'RateLimit', 'UserR
 			labels: ["repo1", "repo2"],
 		    datasets: [
 		        {
-		        	label: 'aaa',
-		            fillColor : "rgba(151,187,205,0)",
-		            strokeColor : "#e67e22",
-		            pointColor : "rgba(151,187,205,0)",
-		            pointStrokeColor : "#e67e22",
+		        	// label: 'aaa',
+		            // fillColor : "rgba(151,187,205,0)",
+		            fillColor : stat.color,
+		            // strokeColor : "#e67e22",
+		            // pointColor : "rgba(151,187,205,0)",
+		            // pointStrokeColor : "#e67e22",
 		            data : [102, 32]
 		        }
 	    	]
@@ -299,6 +311,28 @@ app.controller('MainController', ['$scope', '$http', 'Repo', 'RateLimit', 'UserR
 		$scope.totalRequests = $scope.requestsPerRepo * repos.length;
 	}
 
+	//
+	//
+	//
+
+	function obtainReposNamesCount() {
+		// var result = $scope.reposNames.split(',').length;
+		var result = 0;
+		var reposNames = $scope.reposNames.split(',');
+
+		reposNames.forEach(function(repoName, i) {
+			reposNames[i] = repoName.trim();
+
+			if ('' === repoName) {
+				reposNames.splice(i, 1);
+			}
+		});
+
+		result = reposNames.length;
+
+		return result;
+	}
+
 	function loadRepoStats(repoName, callback) {
 		var basePath = 'https://api.github.com';
 		var path = basePath + '/repos/' + repoName;
@@ -378,5 +412,7 @@ app.controller('MainController', ['$scope', '$http', 'Repo', 'RateLimit', 'UserR
 			callback({err: true}, null);
 	    });
 	}
+
+
 
 }]);

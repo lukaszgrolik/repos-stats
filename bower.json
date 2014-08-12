@@ -5,6 +5,7 @@
     "firebase": "~1.0.19",
     "angularfire": "~0.8.0",
     "angular": "~1.2.21",
-    "angles": "*"
+    "angles": "*",
+    "angular-table": "~1.0.0"
   }
 }

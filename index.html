@@ -4,6 +4,8 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 
+	<link href='http://fonts.googleapis.com/css?family=Raleway:400,700,300' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="bower_components/angular-table/src/main/webapp/css/lib/angular-table.css">
 	<link rel="stylesheet" href="css/main.css">
 
 	<script src="bower_components/async/lib/async.js"></script>
@@ -12,6 +14,7 @@
 	<script src="bower_components/angularfire/dist/angularfire.js"></script>
 	<script src="bower_components/chartjs/Chart.min.js"></script>
 	<script src="bower_components/angles/angles.js"></script>
+	<script src="bower_components/angular-table/src/main/webapp/js/lib/angular-table.js"></script>
 
 	<script src="js/app.js"></script>
 	<script src="js/MainController.js"></script>
@@ -34,72 +37,107 @@
 	<p>You exceeded GitHub API request limit. Wait until to {{rateLimit.coreReset}} to reset limit.</p>
 </div>
 
-<h3>Compare repos</h3>
-
-<div>
-	<form ng-submit="loadStatsByForm()">
+<div class="request-repos-form-area">
+	<form ng-submit="loadStatsByForm()" class="request-repos-form">
 		<!-- <label for="repos-names-field">list of owner/repo separated by comma</label> -->
-		<div>
-			<input ng-model="reposNames" type="text" id="repos-names-field">
+
+		<div class="request-repos-form-input-area">
+			<div class="ca ca-1">
+				<div>
+					<input ng-model="reposNames" type="text" id="repos-names-field" class="request-repos-form-input">
+				</div>
+
+				<div class="repo-list-button-area">
+					<div class="repo-list-button-container">
+						<section>
+							<h1 class="repo-list-button-area-heading">Examples:</h1>
+
+							<ul class="repo-list-button-wrapper-list">
+								<li ng-repeat="repos in comparisonsExamples" class="repo-list-button-wrapper">
+									<span class="repo-list-button">
+										<ul class="requests-examples-repos-list">
+											<li ng-repeat="repo in repos" ng-click="setRepos(repos)">{{repo}}</li>
+										</ul>
+									</span>
+								</li>
+							</ul>
+						</section>
+					</div>
+
+					<div ng-show="recentComparisons.length" class="repo-list-button-container">
+						<section>
+							<h1 class="repo-list-button-area-heading">Your last requests:</h1>
+
+							<ul class="repo-list-button-wrapper-list">
+								<li ng-repeat="comp in recentComparisons" class="repo-list-button-wrapper">
+									<span class="repo-list-button">
+										<ul class="requests-examples-repos-list">
+											<li ng-repeat="repo in comp" ng-click="setRepos(comp)">{{repo}}</li>
+										</ul>
+									</span>
+								</li>
+							</ul>
+						</section>
+
+						<!-- <ul>
+							<li ng-repeat="comp in recentComparisons">
+								<span ng-repeat="repo in comp" ng-click="setRepos(comp)">{{repo}}, </span>
+							</li>
+						</ul> -->
+					</div>
+				</div>
+
+
+				<!-- <div ng-show="Object.keys(recentComparisons).length"> -->
+
+
+				<!-- <div>
+					<input ng-model="requestReposForm.commits" type="checkbox" name="" id="request-repos-form-commits">
+					<label for="request-repos-form-commits">Retrieve number of commits (last year only) - requires 1 more request</label>
+				</div> -->
+
+				<!-- <div>
+					<p>Requests per repo: {{requestsPerRepo}}</p>
+					<p>Total requests: {{totalRequests}}</p>
+				</div> -->
+			</div>
 		</div>
 
-		<div>
-			<span>Examples:</span>
-			<ul>
-				<li ng-repeat="repos in comparisonsExamples">
-					<span>
-						<ul class="requests-examples-repos-list">
-							<li ng-repeat="repo in repos" ng-click="setRepos(repos)">{{repo}}</li>
-						</ul>
-					</span>
-				</li>
-			</ul>
+		<div class="request-repos-form-submit-area">
+			<div class="ca ca-1">
+				<div class="request-repos-form-submit-area-content">
+					<div class="request-repos-form-submit-area-limit-info-area">
+						<div>
+							<p>{{reposNamesCount}} requests will be made</p>
+							<p>You have {{rateLimit.coreRemaining}} remaining requests ({{rateLimit.coreLimit}} total)</p>
+							<p>Limit will reset at {{rateLimit.coreReset}}</p>
+						</div>
+
+						<div>
+							<ul>
+								<li ng-repeat="(key, val) in requestReposForm.errors.fields">field: {{key}}, error type: {{val.type}}</li>
+							</ul>
+						</div>
+					</div>
+
+					<!-- <div class="request-repos-form-submit-area-button-area">
+						<input type="submit" value="Load stats" ng-disabled="loading" class="request-repos-form-submit">
+					</div> -->
+
+					<input type="submit" value="Load repositories" ng-disabled="loading" class="request-repos-form-submit-area-button-area request-repos-form-submit">
+				</div>
+				<!-- <div>
+					<ul>
+						<li ng-repeat="(key, val) in requestReposForm.errors.requests">error: {{key}}</li>
+					</ul>
+				</div> -->
+			</div>
 		</div>
 
-		<!-- <div ng-show="Object.keys(recentComparisons).length"> -->
-		<div>
-			<span>Your last requests:</span>
-			<ul>
-				<li ng-repeat="comp in recentComparisons">
-					<span ng-repeat="repo in comp" ng-click="setRepos(comp)">{{repo}}, </span>
-				</li>
-			</ul>
-		</div>
-
-		<div>
-			<input ng-model="requestReposForm.commits" type="checkbox" name="" id="request-repos-form-commits">
-			<label for="request-repos-form-commits">Retrieve number of commits (last year only) - requires 1 more request</label>
-		</div>
-
-		<div>
-			<p>Requests per repo: {{requestsPerRepo}}</p>
-			<p>Total requests: {{totalRequests}}</p>
-		</div>
-
-		<div>
-			<p>Remaining requests: {{rateLimit.coreRemaining}}/{{rateLimit.coreLimit}}</p>
-			<p>Limit will be reset at {{rateLimit.coreReset}}</p>
-		</div>
-
-		<div>
-			<ul>
-				<li ng-repeat="(key, val) in requestReposForm.errors.fields">field: {{key}}, error type: {{val.type}}</li>
-			</ul>
-		</div>
-
-		<div>
-			<input type="submit" value="Load stats" ng-disabled="loading">
-		</div>
-
-		<div>
-			<ul>
-				<li ng-repeat="(key, val) in requestReposForm.errors.requests">error: {{key}}</li>
-			</ul>
-		</div>
 	</form>
 </div>
 
-<div ng-show="loading">Loading...</div>
+<!-- <div ng-show="loading">Loading...</div> -->
 
 <!-- <h3>Comparisons examples</h3> -->
 
@@ -126,42 +164,81 @@
 	</li>
 </ul> -->
 
-
+<div ng-hide="repos.length">
+	<div class="ca ca-1">
+		<p>Select and load repositories to see statistics.</p>
+	</div>
+</div>
 
 <div ng-show="repos.length">
-	<h3>Stats</h3>
+	<div class="table-area">
+		<div class="ca ca-1">
 
-	<table border="1">
-		<tr>
-			<th><input ng-model="repoFilter.name" type="text" placeholder="Repo"></th>
-			<th>Description</th>
-			<th ng-click="sortRepoByField('createdAt')">Create date</th>
-			<th ng-click="sortRepoByField('updatedAt')">Last update</th>
-			<th ng-click="sortRepoByField('pushedAt')">Last push</th>
-			<th>Homepage</th>
-			<th ng-show="requestReposForm.commits">Commits</th>
-			<th ng-show="requestReposForm.commits">Contributors</th>
-			<th ng-click="sortRepoByField('watchersCount')">Watchers</th>
-			<th ng-click="sortRepoByField('starsCount')">Stars</th>
-			<th ng-click="sortRepoByField('forksCount')">Forks</th>
-			<th ng-click="sortRepoByField('openIssuesCount')">Open issues</th>
-		</tr>
+<!-- <h1>a</h1>
+			<angular-table model="[{name: 'a', description: 'b', createdAt: 'c'}]" filter-query-model="{}" default-sort-column="name">
+			    <header-row>
+			        <header-column sortable="true" sort-field-name="name">
+			            <div style="display: inline-block;">Name</div>
+			            <sort-arrow-ascending></sort-arrow-ascending>
+			            <sort-arrow-descending></sort-arrow-descending>
+			        </header-column>
 
-		<tr ng-repeat="repo in repos | filter:repoFilter | orderBy:repoSortField:repoSortOrder">
-			<td>{{repo.name}}</td>
-			<td>{{repo.description}}</td>
-			<td>{{repo.createdAt}}</td>
-			<td>{{repo.updatedAt}}</td>
-			<td>{{repo.pushedAt}}</td>
-			<td><a ng-href="{{obtainLink(repo.homepage)}}">{{repo.homepage}}</a></td>
-			<td ng-show="requestReposForm.commits">{{repo.commitsCount}}</td>
-			<td ng-show="requestReposForm.commits">{{repo.contributorsCount}}</td>
-			<td>{{repo.watchersCount}}</td>
-			<td>{{repo.starsCount}}</td>
-			<td>{{repo.forksCount}}</td>
-			<td>{{repo.openIssuesCount}}</td>
-		</tr>
-	</table>
+			        <header-column sortable="true" sort-field-name="description">
+			        	<div style="display: inline-block;">Description</div>
+			            <sort-arrow-ascending></sort-arrow-ascending>
+			            <sort-arrow-descending></sort-arrow-descending>
+			        </header-column>
+
+			        <header-column sortable="true" sort-field-name="createdAt">
+			            <div style="display: inline-block;">Created at</div>
+			            <sort-arrow-ascending></sort-arrow-ascending>
+			            <sort-arrow-descending></sort-arrow-descending>
+			        </header-column>
+			    </header-row>
+
+			    <row on-selected="handleRowSelection(row)" selected-color="#87cefa"
+			        even-color="#ffffff" odd-color="#eeeeee">
+			        {{row}}
+			        <column>{{ row.name }}</column>
+			        <column>{{ row.description }}</column>
+			        <column>{{ row.createdAt }}</column>
+			    </row>
+			</angular-table>
+<h1>b</h1> -->
+			<table class="table-1">
+				<tr>
+					<th><input ng-model="repoFilter.name" type="text" placeholder="Repo"></th>
+					<th>Description</th>
+					<!-- <th>Homepage</th> -->
+					<th ng-click="sortRepoByField('createdAt')">Create date</th>
+					<th ng-click="sortRepoByField('updatedAt')">Last update</th>
+					<th ng-click="sortRepoByField('pushedAt')">Last push</th>
+					<th ng-show="requestReposForm.commits">Commits</th>
+					<th ng-show="requestReposForm.commits">Contributors</th>
+					<th ng-click="sortRepoByField('watchersCount')">Watchers</th>
+					<th ng-click="sortRepoByField('starsCount')">Stars</th>
+					<th ng-click="sortRepoByField('forksCount')">Forks</th>
+					<th ng-click="sortRepoByField('openIssuesCount')">Open issues</th>
+				</tr>
+
+				<tr ng-repeat="repo in repos | filter:repoFilter | orderBy:repoSortField:repoSortOrder">
+					<td>{{repo.name}}</td>
+					<td>{{repo.description}}</td>
+					<!-- <td><a ng-href="{{obtainLink(repo.homepage)}}">{{repo.homepage}}</a></td> -->
+					<td>{{repo.createdAt}}</td>
+					<td>{{repo.updatedAt}}</td>
+					<td>{{repo.pushedAt}}</td>
+					<td ng-show="requestReposForm.commits">{{repo.commitsCount}}</td>
+					<td ng-show="requestReposForm.commits">{{repo.contributorsCount}}</td>
+					<td>{{repo.watchersCount}}</td>
+					<td>{{repo.starsCount}}</td>
+					<td>{{repo.forksCount}}</td>
+					<td>{{repo.openIssuesCount}}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
 
 <!-- 	<h3>Limits</h3>
 
@@ -179,28 +256,58 @@
 		</tr>
 	</table> -->
 
-	<div ng-show="requestReposForm.commits">
-		<h3>Commits</h3>
+	<div class="charts-area">
+		<div class="ca ca-1">
+			<div class="chart-container-list" >
 
-		<canvas barchart options="myChartOptions" data="charts.commits" width="500" height="300"></canvas>
+				<div ng-class="" class="chart-container {{stat.name}}-char-container" ng-repeat="stat in stats">
+					<h3 class="charts-area-heading" style="background-color: {{stat.color}}">{{stat.label}}</h3>
+
+					<div class="chart-content">
+						<canvas barchart data="charts[stat.name]" width="500" height="300"></canvas>
+					</div>
+				</div>
+
+<!-- 				<div class="chart-container stars-chart-container">
+					<h3 class="charts-area-heading">Stars</h3>
+
+					<canvas barchart data="charts.stars" width="500" height="300"></canvas>
+				</div>
+
+				<div class="chart-container forks-chart-container">
+					<h3 class="charts-area-heading">Forks</h3>
+
+					<canvas barchart data="charts.forks" width="500" height="300"></canvas>
+				</div>
+
+				<div class="chart-container open-issues-chart-container">
+					<h3 class="charts-area-heading">Open issues</h3>
+
+					<canvas barchart data="charts.openIssues" width="500" height="300"></canvas>
+				</div> -->
+			</div>
+		</div>
 	</div>
+</div>
 
+<div class="faq-area">
+	<div class="ca ca-1">
+		<section>
+			<h1>FAQ</h1>
 
-	<h3>Watchers</h3>
+			<section>
+				<h1>Lorem ipsum.</h1>
 
-	<canvas barchart options="myChartOptions" data="charts.watchers" width="500" height="300"></canvas>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas facere odit omnis vitae, impedit ratione. Illo eaque debitis delectus modi eos cum sunt, nobis dignissimos temporibus. Ab ut, molestias sapiente?</p>
+			</section>
+		</section>
+	</div>
+</div>
 
-	<h3>Stars</h3>
-
-	<canvas barchart options="myChartOptions" data="charts.stars" width="500" height="300"></canvas>
-
-	<h3>Forks</h3>
-
-	<canvas barchart options="myChartOptions" data="charts.forks" width="500" height="300"></canvas>
-
-	<h3>Open issues</h3>
-
-	<canvas barchart options="myChartOptions" data="charts.openIssues" width="500" height="300"></canvas>
+<div class="footer-area">
+	<div class="ca ca-1">
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere voluptates sit soluta, obcaecati explicabo dolores sapiente ut iure earum provident labore, in. Totam possimus eos enim earum aliquid voluptatibus quisquam?</p>
+	</div>
 </div>
 
 </body>
