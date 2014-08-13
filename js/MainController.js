@@ -2,6 +2,8 @@ app.controller('MainController', ['$scope', '$http', 'Repo', 'RateLimit', 'UserR
 
 	$scope.recentComparisons = UserRecentRequests.requests;
 	$scope.globalRecentComparisons = [];
+	$scope.loading = false;
+	$scope.loadingStats = false;
 
 	$scope.requestsPerRepo = 1;
 	$scope.totalRequests = 0;
@@ -11,6 +13,8 @@ app.controller('MainController', ['$scope', '$http', 'Repo', 'RateLimit', 'UserR
 	$scope.reposNamesCount = obtainReposNamesCount();
 	$scope.repoSortOrder = false;
 
+	$scope.rateLimit = false;
+
 	$scope.$watch(function() {
 		return $scope.reposNames;
 	}, function() {
@@ -19,11 +23,19 @@ app.controller('MainController', ['$scope', '$http', 'Repo', 'RateLimit', 'UserR
 
 	$scope.connectionError = false;
 	$scope.limitError = false;
+	$scope.requestRepoError = false;
 
 	$scope.requestReposForm = {};
 	$scope.requestReposForm.errors = {}
 	$scope.requestReposForm.errors.fields = {};
 	$scope.requestReposForm.errors.requests = {};
+	$scope.requestReposForm.errors.requests = {};
+
+	$scope.$watch(function() {
+		return $scope.requestReposForm.errors.requests
+	}, function() {
+		$scope.requestRepoError = Boolean(Object.keys($scope.requestReposForm.errors.requests).length);
+	}, true);
 
 	$scope.stats = [
 		// {
@@ -129,7 +141,6 @@ app.controller('MainController', ['$scope', '$http', 'Repo', 'RateLimit', 'UserR
 
 			$scope.rateLimit = new RateLimit(body);
 
-			// console.log('$scope.rateLimit', $scope.rateLimit)
 
 			// done(null);
 		});
@@ -161,6 +172,7 @@ app.controller('MainController', ['$scope', '$http', 'Repo', 'RateLimit', 'UserR
 		$scope.repos.length = 0;
 		$scope.requestReposForm.errors.fields = {};
 		$scope.requestReposForm.errors.requests = {};
+		$scope.loadingStats = true;
 
 		UserRecentRequests.add(reposNames);
 
@@ -175,8 +187,8 @@ app.controller('MainController', ['$scope', '$http', 'Repo', 'RateLimit', 'UserR
 						function(done) {
 							if ($scope.requestReposForm.commits) {
 								loadCommitActivity(repoName, function(err, resData) {
-									console.log('repoName',repoName)
-									console.log('resData',resData)
+									// console.log('repoName',repoName)
+									// console.log('resData',resData)
 									if (err) {
 										return done(err);
 									}
@@ -271,6 +283,8 @@ app.controller('MainController', ['$scope', '$http', 'Repo', 'RateLimit', 'UserR
 				if (err) {
 					console.log('error', err);
 				}
+
+				$scope.loadingStats = false;
 			}
 		);
 	}
@@ -397,7 +411,7 @@ app.controller('MainController', ['$scope', '$http', 'Repo', 'RateLimit', 'UserR
 
 	function makeRequest(path, callback) {
 		$scope.loading = true;
-		console.log('requested path', path)
+		// console.log('requested path', path)
 
 		$http
 	    .get(path)

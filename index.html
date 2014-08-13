@@ -2,19 +2,22 @@
 <html lang="en" ng-app="myApp" ng-controller="MainController">
 <head>
 	<meta charset="UTF-8">
-	<title>Document</title>
+	<title>GitHub Repositories Statistics</title>
 
 	<link href='http://fonts.googleapis.com/css?family=Raleway:400,700,300' rel='stylesheet' type='text/css'>
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="bower_components/angular-table/src/main/webapp/css/lib/angular-table.css">
 	<link rel="stylesheet" href="css/main.css">
 
 	<script src="bower_components/async/lib/async.js"></script>
+	<script src="bower_components/moment/min/moment.min.js"></script>
 	<script src="bower_components/angular/angular.js"></script>
 	<script src="bower_components/firebase/firebase.js"></script>
 	<script src="bower_components/angularfire/dist/angularfire.js"></script>
 	<script src="bower_components/chartjs/Chart.min.js"></script>
 	<script src="bower_components/angles/angles.js"></script>
 	<script src="bower_components/angular-table/src/main/webapp/js/lib/angular-table.js"></script>
+	<script src="bower_components/angular-tablesort/js/angular-tablesort.js"></script>
 
 	<script src="js/app.js"></script>
 	<script src="js/MainController.js"></script>
@@ -29,12 +32,16 @@
 	<li><a href="#">FAQ</a></li>
 </ul> -->
 
-<div ng-show="connectionError">
-	<p>There is a connection problem.</p>
-</div>
+<div ng-show="connectionError || limitError" class="general-error-area">
+	<div class="ca ca-1">
+		<div ng-show="connectionError" class="">
+			<p>There is a connection problem.</p>
+		</div>
 
-<div ng-show="limitError">
-	<p>You exceeded GitHub API request limit. Wait until to {{rateLimit.coreReset}} to reset limit.</p>
+		<div ng-show="limitError">
+			<p>You exceeded GitHub API request limit. Wait until to {{rateLimit.coreReset}} to reset limit.</p>
+		</div>
+	</div>
 </div>
 
 <div class="request-repos-form-area">
@@ -44,7 +51,8 @@
 		<div class="request-repos-form-input-area">
 			<div class="ca ca-1">
 				<div>
-					<input ng-model="reposNames" type="text" id="repos-names-field" class="request-repos-form-input">
+					<label for="repos-names-field" class="request-repos-form-label">Enter GitHub repositories' names in "owner/repo" format separated by comma:</label>
+					<input ng-model="reposNames" type="text" id="repos-names-field" class="request-repos-form-input" required="true">
 				</div>
 
 				<div class="repo-list-button-area">
@@ -108,52 +116,49 @@
 				<div class="request-repos-form-submit-area-content">
 					<div class="request-repos-form-submit-area-limit-info-area">
 						<div>
-							<p>{{reposNamesCount}} requests will be made</p>
-							<p>You have {{rateLimit.coreRemaining}} remaining requests ({{rateLimit.coreLimit}} total)</p>
-							<p>Limit will reset at {{rateLimit.coreReset}}</p>
+							<ul class="info-list-1">
+								<li ng-show="reposNamesCount" class="info-list-1-item"><span class="special-text-1">{{reposNamesCount}}</span> request<span ng-show="reposNamesCount > 1">s</span> will be made</li>
+								<li ng-show="rateLimit" class="info-list-1-item">You have <span ng-show="rateLimit.coreRemaining == rateLimit.coreLimit">all</span> <span class="special-text-1">{{rateLimit.coreRemaining}}</span> remaining request<span ng-show="rateLimit.coreRemaining > 1">s</span></li>
+								<li ng-show="rateLimit" ng-hide="rateLimit.coreRemaining == rateLimit.coreLimit" class="info-list-1-item">Requests limit will be reset to <span class="special-text-1">{{rateLimit.coreLimit}}</span> at <span class="special-text-1">{{rateLimit.coreReset}}</span></li>
+							</ul>
 						</div>
 
-						<div>
+<!-- 						<div>
 							<ul>
 								<li ng-repeat="(key, val) in requestReposForm.errors.fields">field: {{key}}, error type: {{val.type}}</li>
 							</ul>
-						</div>
+						</div> -->
 					</div>
 
-					<!-- <div class="request-repos-form-submit-area-button-area">
-						<input type="submit" value="Load stats" ng-disabled="loading" class="request-repos-form-submit">
-					</div> -->
+					<div class="request-repos-form-submit-area-button-area">
+						<!-- <input type="submit" value="Load stats" ng-disabled="loading" class="request-repos-form-submit"> -->
+						<button ng-disabled="loadingStats" class="request-repos-form-submit">
+							<span>Load stats</span>
+							<span ng-hide="loadingStats" class="fa fa-cloud-download"></span>
+							<span ng-show="loadingStats" class="fa fa-cog fa-spin"></span>
+						</button>
+					</div>
 
-					<input type="submit" value="Load repositories" ng-disabled="loading" class="request-repos-form-submit-area-button-area request-repos-form-submit">
+					<!-- <input type="submit" value="Load repositories" ng-disabled="loading" class="request-repos-form-submit-area-button-area request-repos-form-submit"> -->
 				</div>
-				<!-- <div>
-					<ul>
-						<li ng-repeat="(key, val) in requestReposForm.errors.requests">error: {{key}}</li>
-					</ul>
-				</div> -->
+
 			</div>
 		</div>
 
 	</form>
 </div>
 
-<!-- <div ng-show="loading">Loading...</div> -->
+<div ng-show="requestRepoError" class="errors-after-form-submit-area">
+	<div class="ca ca-1">
+		<section>
+			<h1 class="request-repo-error-heading">There have been problems while requesting following repos:</h1>
+		</section>
 
-<!-- <h3>Comparisons examples</h3> -->
-
-<!-- <ul>
-	<li ng-repeat="repos in comparisonsExamples">
-		<span ng-repeat="repo in repos" ng-click="setRepos(repos)">{{repo}}, </span>
-	</li>
-</ul> -->
-
-<!-- <h3>Your recent comparisons</h3> -->
-
-<!-- <ul>
-	<li ng-repeat="comp in recentComparisons">
-		<span ng-repeat="repo in comp" ng-click="setRepos(comp)">{{repo}}, </span>
-	</li>
-</ul> -->
+		<ul class="request-repo-error-list">
+			<li ng-repeat="(key, val) in requestReposForm.errors.requests" class="request-repo-error-item">{{key}}</li>
+		</ul>
+	</div>
+</div>
 
 <!-- <h3>Users recently compared</h3>
 
@@ -164,7 +169,7 @@
 	</li>
 </ul> -->
 
-<div ng-hide="repos.length">
+<div ng-hide="repos.length" class="no-table-area">
 	<div class="ca ca-1">
 		<p>Select and load repositories to see statistics.</p>
 	</div>
@@ -205,36 +210,48 @@
 			    </row>
 			</angular-table>
 <h1>b</h1> -->
-			<table class="table-1">
-				<tr>
-					<th><input ng-model="repoFilter.name" type="text" placeholder="Repo"></th>
-					<th>Description</th>
-					<!-- <th>Homepage</th> -->
-					<th ng-click="sortRepoByField('createdAt')">Create date</th>
-					<th ng-click="sortRepoByField('updatedAt')">Last update</th>
-					<th ng-click="sortRepoByField('pushedAt')">Last push</th>
-					<th ng-show="requestReposForm.commits">Commits</th>
-					<th ng-show="requestReposForm.commits">Contributors</th>
-					<th ng-click="sortRepoByField('watchersCount')">Watchers</th>
-					<th ng-click="sortRepoByField('starsCount')">Stars</th>
-					<th ng-click="sortRepoByField('forksCount')">Forks</th>
-					<th ng-click="sortRepoByField('openIssuesCount')">Open issues</th>
-				</tr>
+			<table class="table-1" ts-wrapper>
+				<thead>
+					<tr>
+						<th ts-criteria="name">Repo</th>
+						<!-- <th ts-criteria="name">Repo: <input ng-model="repoFilter.name" type="text"></th> -->
+						<!-- <th>Description</th> -->
+						<!-- <th>Homepage</th> -->
+						<!-- <th ng-click="sortRepoByField('createdAt')">Create date</th> -->
+						<th ts-criteria="createdAt">Create date</th>
+						<!-- <th ng-click="sortRepoByField('updatedAt')">Last update</th> -->
+						<th ts-criteria="updatedAt">Last update</th>
+						<!-- <th ng-click="sortRepoByField('pushedAt')">Last push</th> -->
+						<th ts-criteria="pushedAt">Last push</th>
+						<!-- <th ng-show="requestReposForm.commits">Commits</th> -->
+						<!-- <th ng-show="requestReposForm.commits">Contributors</th> -->
+						<!-- <th ng-click="sortRepoByField('watchersCount')">Watchers</th> -->
+						<th ts-criteria="watchersCount|parseInt">Watchers</th>
+						<!-- <th ng-click="sortRepoByField('starsCount')">Stars</th> -->
+						<th ts-criteria="starsCount|parseInt" ts-default="descending">Stars</th>
+						<!-- <th ng-click="sortRepoByField('forksCount')">Forks</th> -->
+						<th ts-criteria="forksCount|parseInt">Forks</th>
+						<!-- <th ng-click="sortRepoByField('openIssuesCount')">Open issues</th> -->
+						<th ts-criteria="openIssuesCount|parseInt">Open issues</th>
+					</tr>
+				</thead>
 
-				<tr ng-repeat="repo in repos | filter:repoFilter | orderBy:repoSortField:repoSortOrder">
-					<td>{{repo.name}}</td>
-					<td>{{repo.description}}</td>
-					<!-- <td><a ng-href="{{obtainLink(repo.homepage)}}">{{repo.homepage}}</a></td> -->
-					<td>{{repo.createdAt}}</td>
-					<td>{{repo.updatedAt}}</td>
-					<td>{{repo.pushedAt}}</td>
-					<td ng-show="requestReposForm.commits">{{repo.commitsCount}}</td>
-					<td ng-show="requestReposForm.commits">{{repo.contributorsCount}}</td>
-					<td>{{repo.watchersCount}}</td>
-					<td>{{repo.starsCount}}</td>
-					<td>{{repo.forksCount}}</td>
-					<td>{{repo.openIssuesCount}}</td>
-				</tr>
+				<tbody>
+					<tr ng-repeat="repo in repos | filter:repoFilter | orderBy:repoSortField:repoSortOrder" ts-repeat>
+						<td><a ng-href="{{obtainLink(repo.homepage)}}" class="link-1">{{repo.name}}</a></td>
+						<!-- <td>{{repo.description}}</td> -->
+						<!-- <td><a ng-href="{{obtainLink(repo.homepage)}}">{{repo.homepage}}</a></td> -->
+						<td class="format-date">{{repo.createdAt}}</td>
+						<td class="format-date">{{repo.updatedAt}}</td>
+						<td class="format-date">{{repo.pushedAt}}</td>
+						<!-- <td ng-show="requestReposForm.commits">{{repo.commitsCount}}</td> -->
+						<!-- <td ng-show="requestReposForm.commits">{{repo.contributorsCount}}</td> -->
+						<td class="format-number">{{repo.watchersCount}}</td>
+						<td class="format-number">{{repo.starsCount}}</td>
+						<td class="format-number">{{repo.forksCount}}</td>
+						<td class="format-number">{{repo.openIssuesCount}}</td>
+					</tr>
+				</tbody>
 			</table>
 		</div>
 	</div>
@@ -261,54 +278,69 @@
 			<div class="chart-container-list" >
 
 				<div ng-class="" class="chart-container {{stat.name}}-char-container" ng-repeat="stat in stats">
-					<h3 class="charts-area-heading" style="background-color: {{stat.color}}">{{stat.label}}</h3>
+					<h3 class="charts-area-heading" style="background-color: {{stat.color}}">
+						<span ng-class="{'fa-eye': stat.name=='watchers', 'fa-star': stat.name=='stars', 'fa-code-fork': stat.name=='forks', 'fa-exclamation-circle': stat.name=='openIssues'}" class="fa"></span>
+						<span>{{stat.label}}</span>
+					</h3>
 
 					<div class="chart-content">
 						<canvas barchart data="charts[stat.name]" width="500" height="300"></canvas>
 					</div>
 				</div>
-
-<!-- 				<div class="chart-container stars-chart-container">
-					<h3 class="charts-area-heading">Stars</h3>
-
-					<canvas barchart data="charts.stars" width="500" height="300"></canvas>
-				</div>
-
-				<div class="chart-container forks-chart-container">
-					<h3 class="charts-area-heading">Forks</h3>
-
-					<canvas barchart data="charts.forks" width="500" height="300"></canvas>
-				</div>
-
-				<div class="chart-container open-issues-chart-container">
-					<h3 class="charts-area-heading">Open issues</h3>
-
-					<canvas barchart data="charts.openIssues" width="500" height="300"></canvas>
-				</div> -->
 			</div>
 		</div>
 	</div>
 </div>
 
 <div class="faq-area">
-	<div class="ca ca-1">
-		<section>
-			<h1>FAQ</h1>
+	<section>
+		<div class="faq-heading-area">
+			<div class="ca ca-1">
+				<h1 class="faq-heading">FAQ</h1>
+			</div>
+		</div>
 
-			<section>
-				<h1>Lorem ipsum.</h1>
+		<div class="faq-content-area">
+			<div class="ca ca-1">
+				<div class="faq-question-container">
+					<section>
+						<h1 class="faq-question-heading">Why the number of requests is limited?</h1>
 
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas facere odit omnis vitae, impedit ratione. Illo eaque debitis delectus modi eos cum sunt, nobis dignissimos temporibus. Ab ut, molestias sapiente?</p>
-			</section>
-		</section>
-	</div>
+						<div class="faq-answer-container">
+							<p>GitHub limits number of API requests to {{rateLimit.coreLimit}} per hour.</p>
+						</div>
+					</section>
+				</div>
+
+				<div class="faq-question-container">
+					<section>
+						<h1 class="faq-question-heading">Why the number of remaining requests is not decreasing when I make requests?</h1>
+
+						<div class="faq-answer-container">
+							<p>GitHub caches already requested API URLs. The cache for specific repository's URL is being reset when this repository updates.</p>
+						</div>
+					</section>
+				</div>
+
+				<div class="faq-question-container">
+					<section>
+						<h1 class="faq-question-heading">Why there is no search for repositories?</h1>
+
+						<div class="faq-answer-container">
+							<p>GitHub has separate limit for searching - it is only {{rateLimit.searchLimit}} requests per hour, so I decided not to implement front-end search functionality for now. Thus, you have to enter repository names manually.</p>
+						</div>
+					</section>
+				</div>
+			</div>
+		</div>
+	</section>
 </div>
 
-<div class="footer-area">
+<!-- <div class="footer-area">
 	<div class="ca ca-1">
 		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere voluptates sit soluta, obcaecati explicabo dolores sapiente ut iure earum provident labore, in. Totam possimus eos enim earum aliquid voluptatibus quisquam?</p>
 	</div>
-</div>
+</div> -->
 
 </body>
 </html>

@@ -6,6 +6,8 @@
     "angularfire": "~0.8.0",
     "angular": "~1.2.21",
     "angles": "*",
-    "angular-table": "~1.0.0"
+    "angular-table": "~1.0.0",
+    "moment": "~2.8.1",
+    "angular-tablesort": "~1.0.4"
   }
 }

@@ -6,9 +6,10 @@
 	box-sizing: border-box;
 	padding: 0;
 	margin: 0;
+	border: 0;
 }
 
-li
+ul
 {
 	list-style-type: none;
 }
@@ -21,7 +22,9 @@ input
 /**/
 
 html {
-	font-family: Raleway;
+	/*background: #2C3E50;*/
+	background: #1ABC9C;
+	font-family: Raleway, sans-serif;
 }
 
 /**/
@@ -41,14 +44,26 @@ html {
 
 .table-1
 {
+	font-size: .8rem;
 	border-collapse: collapse;
+	width: 100%;
+}
+
+.table-1 tr
+{
+
+}
+
+.table-1 tbody tr:hover
+{
+	background: #ECF0F1;
 }
 
 .table-1 td,
 .table-1 th
 {
 	padding: .5rem 1rem;
-	border: 1px solid #ddd;
+	border: 1px solid #BDC3C7;
 }
 
 .table-1 th
@@ -56,11 +71,96 @@ html {
 	font-weight: bold;
 }
 
+.table-1 .showIfLast
+{
+	display: none;
+}
+
+.table-1 .tablesort-sortable
+{
+	cursor: pointer;
+}
+
+.table-1 .tablesort-sortable:hover
+{
+	/*background: #ECF0F1;*/
+	text-decoration: underline;
+}
+
+.table-1 .tablesort-sortable:after
+{
+	color: #34495E;
+	font-size: 1rem;
+	font-weight: normal;
+}
+
+.table-1 .tablesort-asc
+{
+
+}
+
+.table-1 .tablesort-asc:after
+{
+	content: ' \2191';
+}
+
+.table-1 .tablesort-desc
+{
+
+}
+
+.table-1 .tablesort-desc:after
+{
+	content: ' \2193';
+}
+
+.table-1 .format-date
+{
+	font-family: monospace;
+	text-align: center;
+}
+
+.table-1 .format-number
+{
+	font-family: monospace;
+	text-align: right;
+}
+
+/**/
+
+.link-1
+{
+	color: #3498DB;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.link-1:hover
+{
+	text-decoration: underline;
+}
+
+/**/
+
+.special-text-1
+{
+	font-weight: bold;
+}
+
+/**/
+
+.general-error-area
+{
+	background: #E74C3C;
+	color: #fff;
+	padding: 1rem 0;
+}
+
 /**/
 
 .request-repos-form-area
 {
-	background: #ddd;
+	/*background: #ddd;*/
 }
 
 .request-repos-form-input-area
@@ -76,6 +176,15 @@ html {
 }
 
 /**/
+
+.request-repos-form-label
+{
+	color: #fff;
+	font-size: .8rem;
+	font-weight: bold;
+	margin-bottom: .5rem;
+	display: block;
+}
 
 .request-repos-form-input
 {
@@ -155,20 +264,34 @@ html {
 .request-repos-form-submit-area-content
 {
 	color: #fff;
+	padding: 1rem 0;
 	display: flex;
-	/*align-items: stretch;*/
+	align-items: center;
 }
 
 .request-repos-form-submit-area-limit-info-area
 {
-	padding: 1rem 0;
+	flex-grow: 1;
 }
 
 .request-repos-form-submit-area-button-area
 {
+	/*margin-left: auto;*/
+}
 
-	margin-left: auto;
-	/*position: relative;*/
+/**/
+
+.info-list-1
+{
+	display: flex;
+	flex-wrap: wrap;
+	list-style: square inside;
+}
+
+.info-list-1-item
+{
+	flex-grow: 1;
+	margin: .5rem;
 }
 
 /**/
@@ -176,22 +299,54 @@ html {
 .request-repos-form-submit
 {
 	cursor: pointer;
-	background: #2C3E50;
+	background: #F39C12;
 	color: #fff;
 	font-size: 1.5rem;
-	padding: 1.5rem;
+	padding: 1rem 2rem;
 	outline: 0;
 }
 
 .request-repos-form-submit:hover
 {
-	background: #34495E;
+	background: #E67E22;
+}
+
+/**/
+
+.errors-after-form-submit-area
+{
+	background: #E74C3C;
+	color: #fff;
+	padding: 1rem 0;
+}
+
+.request-repo-error-heading
+{
+	font-weight: bold;
+}
+
+.request-repo-error-list
+{
+	list-style: square inside;
+	margin-top: 1rem;
+}
+
+/**/
+
+.no-table-area
+{
+	background: #fff;
+	color: #7F8C8D;
+	font-size: 1.5rem;
+	text-align: center;
+	padding: 3rem 0;
 }
 
 /**/
 
 .table-area
 {
+	background: #fff;
 	padding: 3rem 0;
 }
 
@@ -199,7 +354,7 @@ html {
 
 .charts-area
 {
-	background: #ECF0F1;
+	background: #BDC3C7;
 	padding: 2rem;
 }
 
@@ -243,11 +398,45 @@ html {
 	color: #fff;
 }
 
+.faq-heading-area
+{
+	background: #16A085;
+	font-size: 1.5rem;
+	/*font-weight: bold;*/
+	padding: 1rem 0;
+}
+
+.faq-content-area
+{
+	padding: 1.5rem;
+}
+
+.faq-question-container
+{
+
+}
+
+.faq-question-container:not(:first-child)
+{
+	margin-top: 1rem;
+}
+
+.faq-question-heading
+{
+	font-size: 1.2rem;
+	font-weight: bold;
+}
+
+.faq-answer-container
+{
+	margin-top: .5rem;
+}
+
 /**/
 
 .footer-area
 {
-	background: #34495E;
+	background: #2C3E50;
 	color: #fff;
 }
 
