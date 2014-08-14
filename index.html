@@ -2,12 +2,11 @@
 <html lang="en" ng-app="myApp" ng-controller="MainController">
 <head>
 	<meta charset="UTF-8">
-	<title>GitHub Repositories Statistics</title>
+	<title>GitHub Repos Stats</title>
 
 	<link href='http://fonts.googleapis.com/css?family=Raleway:400,700,300' rel='stylesheet' type='text/css'>
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="bower_components/angular-table/src/main/webapp/css/lib/angular-table.css">
-	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="css/dist/main.css">
 
 	<script src="bower_components/async/lib/async.js"></script>
 	<script src="bower_components/moment/min/moment.min.js"></script>
@@ -16,7 +15,6 @@
 	<script src="bower_components/angularfire/dist/angularfire.js"></script>
 	<script src="bower_components/chartjs/Chart.min.js"></script>
 	<script src="bower_components/angles/angles.js"></script>
-	<script src="bower_components/angular-table/src/main/webapp/js/lib/angular-table.js"></script>
 	<script src="bower_components/angular-tablesort/js/angular-tablesort.js"></script>
 
 	<script src="js/app.js"></script>
@@ -27,11 +25,6 @@
 </head>
 <body>
 
-<!-- <ul>
-	<li><a href="#">Home</a></li>
-	<li><a href="#">FAQ</a></li>
-</ul> -->
-
 <div ng-show="connectionError || limitError" class="general-error-area">
 	<div class="ca ca-1">
 		<div ng-show="connectionError" class="">
@@ -39,20 +32,18 @@
 		</div>
 
 		<div ng-show="limitError">
-			<p>You exceeded GitHub API request limit. Wait until to {{rateLimit.coreReset}} to reset limit.</p>
+			<p>You exceeded GitHub API request limit. Wait until {{rateLimit.coreReset}} when limit will be reset.</p>
 		</div>
 	</div>
 </div>
 
 <div class="request-repos-form-area">
 	<form ng-submit="loadStatsByForm()" class="request-repos-form">
-		<!-- <label for="repos-names-field">list of owner/repo separated by comma</label> -->
-
 		<div class="request-repos-form-input-area">
 			<div class="ca ca-1">
 				<div>
-					<label for="repos-names-field" class="request-repos-form-label">Enter GitHub repositories' names in "owner/repo" format separated by comma:</label>
-					<input ng-model="reposNames" type="text" id="repos-names-field" class="request-repos-form-input" required="true">
+					<label for="repos-names-field" class="request-repos-form-label">Enter GitHub repositories' names in an "owner/repo" format separated by commas:</label>
+					<input ng-model="reposNames" type="text" id="repos-names-field" class="request-repos-form-input" required="true" autofocus="true">
 				</div>
 
 				<div class="repo-list-button-area">
@@ -63,7 +54,7 @@
 							<ul class="repo-list-button-wrapper-list">
 								<li ng-repeat="repos in comparisonsExamples" class="repo-list-button-wrapper">
 									<span class="repo-list-button">
-										<ul class="requests-examples-repos-list">
+										<ul>
 											<li ng-repeat="repo in repos" ng-click="setRepos(repos)">{{repo}}</li>
 										</ul>
 									</span>
@@ -79,35 +70,15 @@
 							<ul class="repo-list-button-wrapper-list">
 								<li ng-repeat="comp in recentComparisons" class="repo-list-button-wrapper">
 									<span class="repo-list-button">
-										<ul class="requests-examples-repos-list">
+										<ul>
 											<li ng-repeat="repo in comp" ng-click="setRepos(comp)">{{repo}}</li>
 										</ul>
 									</span>
 								</li>
 							</ul>
 						</section>
-
-						<!-- <ul>
-							<li ng-repeat="comp in recentComparisons">
-								<span ng-repeat="repo in comp" ng-click="setRepos(comp)">{{repo}}, </span>
-							</li>
-						</ul> -->
 					</div>
 				</div>
-
-
-				<!-- <div ng-show="Object.keys(recentComparisons).length"> -->
-
-
-				<!-- <div>
-					<input ng-model="requestReposForm.commits" type="checkbox" name="" id="request-repos-form-commits">
-					<label for="request-repos-form-commits">Retrieve number of commits (last year only) - requires 1 more request</label>
-				</div> -->
-
-				<!-- <div>
-					<p>Requests per repo: {{requestsPerRepo}}</p>
-					<p>Total requests: {{totalRequests}}</p>
-				</div> -->
 			</div>
 		</div>
 
@@ -119,32 +90,21 @@
 							<ul class="info-list-1">
 								<li ng-show="reposNamesCount" class="info-list-1-item"><span class="special-text-1">{{reposNamesCount}}</span> request<span ng-show="reposNamesCount > 1">s</span> will be made</li>
 								<li ng-show="rateLimit" class="info-list-1-item">You have <span ng-show="rateLimit.coreRemaining == rateLimit.coreLimit">all</span> <span class="special-text-1">{{rateLimit.coreRemaining}}</span> remaining request<span ng-show="rateLimit.coreRemaining > 1">s</span></li>
-								<li ng-show="rateLimit" ng-hide="rateLimit.coreRemaining == rateLimit.coreLimit" class="info-list-1-item">Requests limit will be reset to <span class="special-text-1">{{rateLimit.coreLimit}}</span> at <span class="special-text-1">{{rateLimit.coreReset}}</span></li>
+								<li ng-show="rateLimit && rateLimit.coreRemaining != rateLimit.coreLimit" class="info-list-1-item">Requests limit will be reset to <span class="special-text-1">{{rateLimit.coreLimit}}</span> at <span class="special-text-1">{{rateLimit.coreReset}}</span></li>
 							</ul>
 						</div>
-
-<!-- 						<div>
-							<ul>
-								<li ng-repeat="(key, val) in requestReposForm.errors.fields">field: {{key}}, error type: {{val.type}}</li>
-							</ul>
-						</div> -->
 					</div>
 
 					<div class="request-repos-form-submit-area-button-area">
-						<!-- <input type="submit" value="Load stats" ng-disabled="loading" class="request-repos-form-submit"> -->
 						<button ng-disabled="loadingStats" class="request-repos-form-submit">
 							<span>Load stats</span>
 							<span ng-hide="loadingStats" class="fa fa-cloud-download"></span>
 							<span ng-show="loadingStats" class="fa fa-cog fa-spin"></span>
 						</button>
 					</div>
-
-					<!-- <input type="submit" value="Load repositories" ng-disabled="loading" class="request-repos-form-submit-area-button-area request-repos-form-submit"> -->
 				</div>
-
 			</div>
 		</div>
-
 	</form>
 </div>
 
@@ -171,67 +131,24 @@
 
 <div ng-hide="repos.length" class="no-table-area">
 	<div class="ca ca-1">
-		<p>Select and load repositories to see statistics.</p>
+		<p>Enter and load repositories to see statistics.</p>
 	</div>
 </div>
 
 <div ng-show="repos.length">
 	<div class="table-area">
 		<div class="ca ca-1">
-
-<!-- <h1>a</h1>
-			<angular-table model="[{name: 'a', description: 'b', createdAt: 'c'}]" filter-query-model="{}" default-sort-column="name">
-			    <header-row>
-			        <header-column sortable="true" sort-field-name="name">
-			            <div style="display: inline-block;">Name</div>
-			            <sort-arrow-ascending></sort-arrow-ascending>
-			            <sort-arrow-descending></sort-arrow-descending>
-			        </header-column>
-
-			        <header-column sortable="true" sort-field-name="description">
-			        	<div style="display: inline-block;">Description</div>
-			            <sort-arrow-ascending></sort-arrow-ascending>
-			            <sort-arrow-descending></sort-arrow-descending>
-			        </header-column>
-
-			        <header-column sortable="true" sort-field-name="createdAt">
-			            <div style="display: inline-block;">Created at</div>
-			            <sort-arrow-ascending></sort-arrow-ascending>
-			            <sort-arrow-descending></sort-arrow-descending>
-			        </header-column>
-			    </header-row>
-
-			    <row on-selected="handleRowSelection(row)" selected-color="#87cefa"
-			        even-color="#ffffff" odd-color="#eeeeee">
-			        {{row}}
-			        <column>{{ row.name }}</column>
-			        <column>{{ row.description }}</column>
-			        <column>{{ row.createdAt }}</column>
-			    </row>
-			</angular-table>
-<h1>b</h1> -->
 			<table class="table-1" ts-wrapper>
 				<thead>
 					<tr>
 						<th ts-criteria="name">Repo</th>
 						<!-- <th ts-criteria="name">Repo: <input ng-model="repoFilter.name" type="text"></th> -->
-						<!-- <th>Description</th> -->
-						<!-- <th>Homepage</th> -->
-						<!-- <th ng-click="sortRepoByField('createdAt')">Create date</th> -->
 						<th ts-criteria="createdAt">Create date</th>
-						<!-- <th ng-click="sortRepoByField('updatedAt')">Last update</th> -->
 						<th ts-criteria="updatedAt">Last update</th>
-						<!-- <th ng-click="sortRepoByField('pushedAt')">Last push</th> -->
 						<th ts-criteria="pushedAt">Last push</th>
-						<!-- <th ng-show="requestReposForm.commits">Commits</th> -->
-						<!-- <th ng-show="requestReposForm.commits">Contributors</th> -->
-						<!-- <th ng-click="sortRepoByField('watchersCount')">Watchers</th> -->
 						<th ts-criteria="watchersCount|parseInt">Watchers</th>
-						<!-- <th ng-click="sortRepoByField('starsCount')">Stars</th> -->
 						<th ts-criteria="starsCount|parseInt" ts-default="descending">Stars</th>
-						<!-- <th ng-click="sortRepoByField('forksCount')">Forks</th> -->
 						<th ts-criteria="forksCount|parseInt">Forks</th>
-						<!-- <th ng-click="sortRepoByField('openIssuesCount')">Open issues</th> -->
 						<th ts-criteria="openIssuesCount|parseInt">Open issues</th>
 					</tr>
 				</thead>
@@ -239,13 +156,9 @@
 				<tbody>
 					<tr ng-repeat="repo in repos | filter:repoFilter | orderBy:repoSortField:repoSortOrder" ts-repeat>
 						<td><a ng-href="{{obtainLink(repo.homepage)}}" class="link-1">{{repo.name}}</a></td>
-						<!-- <td>{{repo.description}}</td> -->
-						<!-- <td><a ng-href="{{obtainLink(repo.homepage)}}">{{repo.homepage}}</a></td> -->
 						<td class="format-date">{{repo.createdAt}}</td>
 						<td class="format-date">{{repo.updatedAt}}</td>
 						<td class="format-date">{{repo.pushedAt}}</td>
-						<!-- <td ng-show="requestReposForm.commits">{{repo.commitsCount}}</td> -->
-						<!-- <td ng-show="requestReposForm.commits">{{repo.contributorsCount}}</td> -->
 						<td class="format-number">{{repo.watchersCount}}</td>
 						<td class="format-number">{{repo.starsCount}}</td>
 						<td class="format-number">{{repo.forksCount}}</td>
@@ -255,7 +168,6 @@
 			</table>
 		</div>
 	</div>
-
 
 <!-- 	<h3>Limits</h3>
 
@@ -314,20 +226,20 @@
 
 				<div class="faq-question-container">
 					<section>
-						<h1 class="faq-question-heading">Why the number of remaining requests is not decreasing when I make requests?</h1>
+						<h1 class="faq-question-heading">Why the number of remaining requests does not decrease when I make requests?</h1>
 
 						<div class="faq-answer-container">
-							<p>GitHub caches already requested API URLs. The cache for specific repository's URL is being reset when this repository updates.</p>
+							<p>GitHub caches API calls. The cache for specific repository is being reset when this repository updates.</p>
 						</div>
 					</section>
 				</div>
 
 				<div class="faq-question-container">
 					<section>
-						<h1 class="faq-question-heading">Why there is no search for repositories?</h1>
+						<h1 class="faq-question-heading">Why there is no search functionality for repositories?</h1>
 
 						<div class="faq-answer-container">
-							<p>GitHub has separate limit for searching - it is only {{rateLimit.searchLimit}} requests per hour, so I decided not to implement front-end search functionality for now. Thus, you have to enter repository names manually.</p>
+							<p>GitHub has separate limit for searching - it is only {{rateLimit.searchLimit}} requests per hour, so I decided not to implement front-end search functionality for now. Thus, you have to enter repositories' names manually.</p>
 						</div>
 					</section>
 				</div>
@@ -336,11 +248,22 @@
 	</section>
 </div>
 
-<!-- <div class="footer-area">
+<div class="footer-area">
 	<div class="ca ca-1">
-		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere voluptates sit soluta, obcaecati explicabo dolores sapiente ut iure earum provident labore, in. Totam possimus eos enim earum aliquid voluptatibus quisquam?</p>
+		<p>Made by <a href="http://lukaszgrolik.pl" class="footer-author-homepage-link">Łukasz Grolik</a></p>
 	</div>
-</div> -->
+</div>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-53841017-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
 
 </body>
 </html>

@@ -14,8 +14,25 @@ module.exports = function(grunt) {
       }
     },
 
-    watch: {
+    autoprefixer: {
+      options: {
+        browsers: ['> 0.5%']
+      },
+      main: {
+        src: 'css/src/main.css',
+        dest: 'css/dist/main.css'
+      },
+    },
 
+    watch: {
+      options: {
+        atBegin: true
+      },
+
+      autoprefixer: {
+        files: ['css/src/main.css'],
+        tasks: ['autoprefixer:main']
+      },
     }
   });
 

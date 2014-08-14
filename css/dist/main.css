@@ -1,0 +1,514 @@
+*
+{
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: inherit;
+    -webkit-box-shadow: none;
+            box-shadow: none;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+
+ul
+{
+	list-style-type: none;
+}
+
+input
+{
+	border: 0;
+}
+
+/**/
+
+*
+{
+	-webkit-transition: background .2s;
+	        transition: background .2s;
+}
+
+html {
+	/*background: #2C3E50;*/
+	/*background: #1ABC9C;*/
+	background: #34495E;
+	font-family: Raleway, sans-serif;
+}
+
+/**/
+
+.ca
+{
+	padding: 0 1rem;
+	margin: 0 auto;
+}
+
+.ca-1
+{
+	max-width: 1200px;
+}
+
+/**/
+
+.table-1
+{
+	font-size: .8rem;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.table-1 tr
+{
+
+}
+
+.table-1 tbody tr:hover
+{
+	background: #ECF0F1;
+}
+
+.table-1 td,
+.table-1 th
+{
+	padding: .5rem 1rem;
+	border: 1px solid #BDC3C7;
+}
+
+.table-1 th
+{
+	font-weight: bold;
+}
+
+.table-1 .showIfLast
+{
+	display: none;
+}
+
+.table-1 .tablesort-sortable
+{
+	cursor: pointer;
+}
+
+.table-1 .tablesort-sortable:hover
+{
+	/*background: #ECF0F1;*/
+	text-decoration: underline;
+}
+
+.table-1 .tablesort-sortable:after
+{
+	color: #34495E;
+	font-size: 1rem;
+	font-weight: normal;
+}
+
+.table-1 .tablesort-asc
+{
+
+}
+
+.table-1 .tablesort-asc:after
+{
+	content: ' \2191';
+}
+
+.table-1 .tablesort-desc
+{
+
+}
+
+.table-1 .tablesort-desc:after
+{
+	content: ' \2193';
+}
+
+.table-1 .format-date
+{
+	font-family: monospace;
+	text-align: center;
+}
+
+.table-1 .format-number
+{
+	font-family: monospace;
+	text-align: right;
+}
+
+/**/
+
+.link-1
+{
+	color: #3498DB;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.link-1:hover
+{
+	text-decoration: underline;
+}
+
+/**/
+
+.special-text-1
+{
+	font-weight: bold;
+}
+
+/**/
+
+.general-error-area
+{
+	background: #E74C3C;
+	color: #fff;
+	padding: 1rem 0;
+}
+
+/**/
+
+.request-repos-form-area
+{
+	/*background: #ddd;*/
+}
+
+.request-repos-form-input-area
+{
+	background: #3498DB;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+}
+
+.request-repos-form-submit-area
+{
+	background: #2980B9;
+}
+
+/**/
+
+.request-repos-form-label
+{
+	color: #fff;
+	font-size: .8rem;
+	font-weight: bold;
+	margin-bottom: .5rem;
+	display: block;
+}
+
+.request-repos-form-input
+{
+	color: #7F8C8D;
+	font-family: monospace;
+	font-size: 1.5rem;
+	padding: .5rem;
+	width: 100%;
+	outline: 0;
+	display: block;
+}
+
+/**/
+
+.repo-list-button-area
+{
+	color: #fff;
+	margin-top: 1rem;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+}
+
+.repo-list-button-container
+{
+	font-size: 0.8rem;
+}
+
+.repo-list-button-container:not(:first-child)
+{
+	margin-left: 1rem;
+}
+
+/**/
+
+.repo-list-button-area-heading
+{
+	font-weight: bold;
+	margin-bottom: .5rem;
+}
+
+/**/
+
+.repo-list-button-wrapper-list
+{
+
+}
+
+.repo-list-button-wrapper
+{
+
+}
+
+.repo-list-button-wrapper-list .repo-list-button-wrapper:not(:first-child)
+{
+	margin-top: .25rem;
+}
+
+.repo-list-button
+{
+	cursor: pointer;
+	background: rgba(255, 255, 255, .2);
+	font-family: monospace;
+	padding: .15rem .3rem;
+	display: inline-block;
+}
+
+.repo-list-button:hover
+{
+	background: rgba(255, 255, 255, .3)
+}
+
+/**/
+
+.repo-list-button > ul
+{
+	display: inline-block;
+}
+
+.repo-list-button > ul > li
+{
+	display: inline-block;
+}
+
+.repo-list-button > ul > li:not(:last-child):after
+{
+	content: ',\00A0'; /* comma and non-breaking space - normal space does not work */
+}
+
+/**/
+
+.request-repos-form-submit-area
+{
+
+}
+
+.request-repos-form-submit-area-content
+{
+	color: #fff;
+	padding: 1rem 0;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+
+.request-repos-form-submit-area-limit-info-area
+{
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
+}
+
+.request-repos-form-submit-area-button-area
+{
+	/*margin-left: auto;*/
+}
+
+/**/
+
+.info-list-1
+{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+    -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+	list-style: square inside;
+}
+
+.info-list-1-item
+{
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
+	margin: .5rem;
+}
+
+/**/
+
+.request-repos-form-submit
+{
+	cursor: pointer;
+	background: #F39C12;
+	color: #fff;
+	font-size: 1.5rem;
+	padding: 1rem 2rem;
+	outline: 0;
+}
+
+.request-repos-form-submit:hover
+{
+	background: #E67E22;
+}
+
+/**/
+
+.errors-after-form-submit-area
+{
+	background: #E74C3C;
+	color: #fff;
+	padding: 1rem 0;
+}
+
+.request-repo-error-heading
+{
+	font-weight: bold;
+}
+
+.request-repo-error-list
+{
+	list-style: square inside;
+	margin-top: 1rem;
+}
+
+/**/
+
+.no-table-area
+{
+	background: #fff;
+	color: #7F8C8D;
+	font-size: 1.5rem;
+	text-align: center;
+	padding: 3rem 0;
+}
+
+/**/
+
+.table-area
+{
+	background: #fff;
+	padding: 3rem 0;
+}
+
+/**/
+
+.charts-area
+{
+	background: #BDC3C7;
+	padding: 2rem;
+}
+
+/**/
+
+.chart-container-list
+{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+    -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+}
+
+.chart-container
+{
+	background: #fff;
+	margin: 1rem;
+}
+
+.chart-content
+{
+	padding: 1rem;
+}
+
+/**/
+
+.charts-area-heading
+{
+	/*background: #1ABC9C;*/
+	color: #fff;
+	font-weight: bold;
+	text-align: center;
+	padding: .5rem 1rem;
+	margin-bottom: 1rem;
+}
+
+/**/
+
+.faq-area
+{
+	background: #1ABC9C;
+	color: #fff;
+	border-bottom: 1px dashed #fff;
+}
+
+.faq-heading-area
+{
+	background: #16A085;
+	font-size: 1.5rem;
+	/*font-weight: bold;*/
+	padding: 1rem 0;
+}
+
+.faq-content-area
+{
+	padding: 1.5rem;
+}
+
+.faq-question-container
+{
+
+}
+
+.faq-question-container:not(:first-child)
+{
+	margin-top: 1rem;
+}
+
+.faq-question-heading
+{
+	font-size: 1.2rem;
+	font-weight: bold;
+}
+
+.faq-answer-container
+{
+	margin-top: .5rem;
+}
+
+/**/
+
+.footer-area
+{
+	background: #34495E;
+	color: #fff;
+	font-size: .8rem;
+	text-align: center;
+	letter-spacing: 1px;
+	padding: 1rem 0;
+}
+
+.footer-author-homepage-link
+{
+	color: #fff;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.footer-author-homepage-link:hover
+{
+	text-decoration: underline;
+}

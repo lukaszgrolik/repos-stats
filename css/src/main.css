@@ -3,8 +3,8 @@
 	font-family: inherit;
 	font-size: inherit;
 	font-weight: inherit;
-	box-shadow: none;
-	box-sizing: border-box;
+    box-shadow: none;
+    box-sizing: border-box;
 	padding: 0;
 	margin: 0;
 	border: 0;
@@ -22,9 +22,15 @@ input
 
 /**/
 
+*
+{
+	transition: background .2s;
+}
+
 html {
 	/*background: #2C3E50;*/
-	background: #1ABC9C;
+	/*background: #1ABC9C;*/
+	background: #34495E;
 	font-family: Raleway, sans-serif;
 }
 
@@ -256,6 +262,24 @@ html {
 	background: rgba(255, 255, 255, .3)
 }
 
+/**/
+
+.repo-list-button > ul
+{
+	display: inline-block;
+}
+
+.repo-list-button > ul > li
+{
+	display: inline-block;
+}
+
+.repo-list-button > ul > li:not(:last-child):after
+{
+	content: ',\00A0'; /* comma and non-breaking space - normal space does not work */
+}
+
+/**/
 
 .request-repos-form-submit-area
 {
@@ -267,12 +291,12 @@ html {
 	color: #fff;
 	padding: 1rem 0;
 	display: flex;
-	align-items: center;
+    align-items: center;
 }
 
 .request-repos-form-submit-area-limit-info-area
 {
-	flex-grow: 1;
+    flex-grow: 1;
 }
 
 .request-repos-form-submit-area-button-area
@@ -285,13 +309,13 @@ html {
 .info-list-1
 {
 	display: flex;
-	flex-wrap: wrap;
+    flex-wrap: wrap;
 	list-style: square inside;
 }
 
 .info-list-1-item
 {
-	flex-grow: 1;
+    flex-grow: 1;
 	margin: .5rem;
 }
 
@@ -364,8 +388,8 @@ html {
 .chart-container-list
 {
 	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .chart-container
@@ -397,6 +421,7 @@ html {
 {
 	background: #1ABC9C;
 	color: #fff;
+	border-bottom: 1px dashed #fff;
 }
 
 .faq-heading-area
@@ -437,65 +462,22 @@ html {
 
 .footer-area
 {
-	background: #2C3E50;
+	background: #34495E;
 	color: #fff;
+	font-size: .8rem;
+	text-align: center;
+	letter-spacing: 1px;
+	padding: 1rem 0;
 }
 
-/**/
-
-
-
-.requests-examples-list
+.footer-author-homepage-link
 {
-
+	color: #fff;
+	font-weight: bold;
+	text-decoration: none;
 }
 
-.requests-examples-list > li:before
+.footer-author-homepage-link:hover
 {
-	content: ', ';
-}
-
-.requests-examples-list > li:first-child:before
-{
-	content: '';
-}
-
-.requests-examples-list > li
-{
-	display: inline-block;
-}
-
-.requests-examples-list > li > span
-{
-/*	cursor: pointer;
-	background: #eee;
-	padding: .25rem;
-	border: 1px solid #ccc;*/
-	display: inline-block;
-}
-
-.requests-examples-list > li > span:hover
-{
-	/*background: #e7e7e7;*/
-}
-
-
-.requests-examples-repos-list
-{
-	display: inline-block;
-}
-
-.requests-examples-repos-list > li
-{
-	display: inline-block;
-}
-
-.requests-examples-repos-list > li:before
-{
-	content: ', ';
-}
-
-.requests-examples-repos-list > li:first-child:before
-{
-	content: '';
+	text-decoration: underline;
 }
