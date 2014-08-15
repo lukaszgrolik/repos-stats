@@ -2,6 +2,10 @@
 <html lang="en" ng-app="myApp" ng-controller="MainController">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="initial-scale=1">
+	<meta name="description" content="Compare GitHub repositories easily">
+	<meta name="keywords" content="github, repositories, statistics">
+
 	<title>GitHub Repos Stats</title>
 
 	<link href='http://fonts.googleapis.com/css?family=Raleway:400,700,300' rel='stylesheet' type='text/css'>
@@ -53,9 +57,9 @@
 
 							<ul class="repo-list-button-wrapper-list">
 								<li ng-repeat="repos in comparisonsExamples" class="repo-list-button-wrapper">
-									<span class="repo-list-button">
+									<span ng-click="setRepos(repos)" class="repo-list-button">
 										<ul>
-											<li ng-repeat="repo in repos" ng-click="setRepos(repos)">{{repo}}</li>
+											<li ng-repeat="repo in repos">{{repo}}</li>
 										</ul>
 									</span>
 								</li>
@@ -250,7 +254,7 @@
 
 <div class="footer-area">
 	<div class="ca ca-1">
-		<p>Made by <a href="http://lukaszgrolik.pl" class="footer-author-homepage-link">Łukasz Grolik</a></p>
+		<p>Created by <a href="http://lukaszgrolik.pl" class="footer-author-homepage-link">Łukasz Grolik</a></p>
 	</div>
 </div>
 
