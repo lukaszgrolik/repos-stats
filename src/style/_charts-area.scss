@@ -1,0 +1,33 @@
+.charts-area
+{
+  background: #BDC3C7;
+  padding: 2rem;
+}
+
+.charts-area-heading
+{
+  /*background: #1ABC9C;*/
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+  padding: .5rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.chart-container-list
+{
+  display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.chart-container
+{
+  background: #fff;
+  margin: 1rem;
+}
+
+.chart-content
+{
+  padding: 1rem;
+}

@@ -1,0 +1,105 @@
+<div class="main-header-container">
+  <div ng-show="connectionError || limitError" class="general-error-area">
+    <div class="ca ca-1">
+      <div ng-show="connectionError" class="">
+        <p>There is a connection problem.</p>
+      </div>
+
+      <div ng-show="limitError">
+        <p>You exceeded GitHub API request limit. Wait until {{rateLimit.coreReset}} when limit will be reset.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="request-repos-form-area">
+    <form ng-submit="loadStatsByForm()" class="request-repos-form">
+      <div class="request-repos-form-input-area">
+        <div class="ca ca-1">
+          <div>
+            <label for="repos-names-field" class="request-repos-form-label">Enter GitHub repositories' names in an "owner/repo" format separated by commas:</label>
+            <input ng-model="reposNames" type="text" id="repos-names-field" class="request-repos-form-input" required="true" autofocus="true">
+          </div>
+
+          <div class="repo-list-button-area">
+            <div class="repo-list-button-container">
+              <section>
+                <h1 class="repo-list-button-area-heading">Examples:</h1>
+
+                <ul class="repo-list-button-wrapper-list">
+                  <li ng-repeat="repos in comparisonsExamples" class="repo-list-button-wrapper">
+                    <span ng-click="setRepos(repos)" class="repo-list-button">
+                      <ul>
+                        <li ng-repeat="repo in repos">{{repo}}</li>
+                      </ul>
+                    </span>
+                  </li>
+                </ul>
+              </section>
+            </div>
+
+            <div ng-show="recentComparisons.length" class="repo-list-button-container">
+              <section>
+                <h1 class="repo-list-button-area-heading">Your last requests:</h1>
+
+                <ul class="repo-list-button-wrapper-list">
+                  <li ng-repeat="comp in recentComparisons" class="repo-list-button-wrapper">
+                    <span class="repo-list-button">
+                      <ul>
+                        <li ng-repeat="repo in comp" ng-click="setRepos(comp)">{{repo}}</li>
+                      </ul>
+                    </span>
+                  </li>
+                </ul>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="request-repos-form-submit-area">
+        <div class="ca ca-1">
+          <div class="request-repos-form-submit-area-content">
+            <div class="request-repos-form-submit-area-limit-info-area">
+              <div>
+                <ul class="info-list-1">
+                  <li ng-show="reposNamesCount" class="info-list-1-item"><span class="special-text-1">{{reposNamesCount}}</span> request<span ng-show="reposNamesCount > 1">s</span> will be made</li>
+                  <li ng-show="rateLimit" class="info-list-1-item">You have <span ng-show="rateLimit.coreRemaining == rateLimit.coreLimit">all</span> <span class="special-text-1">{{rateLimit.coreRemaining}}</span> remaining request<span ng-show="rateLimit.coreRemaining > 1">s</span></li>
+                  <li ng-show="rateLimit && rateLimit.coreRemaining != rateLimit.coreLimit" class="info-list-1-item">Requests limit will be reset to <span class="special-text-1">{{rateLimit.coreLimit}}</span> at <span class="special-text-1">{{rateLimit.coreReset}}</span></li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="request-repos-form-submit-area-button-area">
+              <button ng-disabled="loadingStats" class="request-repos-form-submit">
+                <span>Load stats</span>
+                <span ng-hide="loadingStats" class="fa fa-cloud-download"></span>
+                <span ng-show="loadingStats" class="fa fa-cog fa-spin"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div ng-show="requestRepoError" class="errors-after-form-submit-area">
+    <div class="ca ca-1">
+      <section>
+        <h1 class="request-repo-error-heading">There have been problems while requesting following repos:</h1>
+      </section>
+
+      <ul class="request-repo-error-list">
+        <li ng-repeat="(key, val) in requestReposForm.errors.requests" class="request-repo-error-item">{{key}}</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- <h3>Users recently compared</h3>
+
+  <ul>
+    <li ng-repeat="comp in globalRecentComparisons">
+      <span ng-repeat="repo in comp">{{repo}}, </span>
+      <button ng-click="loadStats(comp)" ng-disabled="loading">Load</button>
+    </li>
+  </ul> -->
+</div>

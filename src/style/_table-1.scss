@@ -1,0 +1,83 @@
+.table-1
+{
+  font-size: .8rem;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.table-1 tr
+{
+
+}
+
+.table-1 tbody tr:hover
+{
+  background: #ECF0F1;
+}
+
+.table-1 td,
+.table-1 th
+{
+  padding: .5rem 1rem;
+  border: 1px solid #BDC3C7;
+}
+
+.table-1 th
+{
+  font-weight: bold;
+}
+
+.table-1 .showIfLast
+{
+  display: none;
+}
+
+.table-1 .tablesort-sortable
+{
+  cursor: pointer;
+}
+
+.table-1 .tablesort-sortable:hover
+{
+  /*background: #ECF0F1;*/
+  text-decoration: underline;
+}
+
+.table-1 .tablesort-sortable:after
+{
+  color: #34495E;
+  font-size: 1rem;
+  font-weight: normal;
+}
+
+.table-1 .tablesort-asc
+{
+
+}
+
+.table-1 .tablesort-asc:after
+{
+  content: ' \2191';
+}
+
+.table-1 .tablesort-desc
+{
+
+}
+
+.table-1 .tablesort-desc:after
+{
+  content: ' \2193';
+}
+
+.table-1 .format-date
+{
+  font-family: monospace;
+  text-align: center;
+}
+
+.table-1 .format-number
+{
+  font-family: monospace;
+  text-align: right;
+}

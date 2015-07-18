@@ -1,4 +1,5 @@
-app.service('UserRecentRequests', ['$firebase', function($firebase) {
+angular.module('app')
+.service('UserRecentRequests', function() {
 
 	this.REPOS_REQUESTS_STORAGE_KEY = 'reposRequests'
 	this.REPOS_LIMIT = 5;
@@ -23,4 +24,4 @@ app.service('UserRecentRequests', ['$firebase', function($firebase) {
 		localStorage.setItem(this.REPOS_REQUESTS_STORAGE_KEY, JSON.stringify(this.requests));
 	}
 
-}]);
+});

@@ -1,2 +1,5 @@
-bower_components
-node_modules
+/*.sublime-workspace
+/bower_components
+/build-temp
+/node_modules
+/web

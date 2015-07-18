@@ -1,0 +1,37 @@
+.request-repos-form-submit-area
+{
+
+}
+
+.request-repos-form-submit-area-content
+{
+  color: #fff;
+  padding: 1rem 0;
+  display: flex;
+    align-items: center;
+}
+
+.request-repos-form-submit-area-limit-info-area
+{
+    flex-grow: 1;
+}
+
+.request-repos-form-submit-area-button-area
+{
+  /*margin-left: auto;*/
+}
+
+.request-repos-form-submit
+{
+  cursor: pointer;
+  background: #F39C12;
+  color: #fff;
+  font-size: 1.5rem;
+  padding: 1rem 2rem;
+  outline: 0;
+}
+
+.request-repos-form-submit:hover
+{
+  background: #E67E22;
+}

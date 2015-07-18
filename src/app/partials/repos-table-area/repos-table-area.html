@@ -1,0 +1,60 @@
+<div class="repos-table-area-container">
+  <div ng-hide="repos.length" class="no-table-area">
+    <div class="ca ca-1">
+      <p>Enter and load repositories to see statistics.</p>
+    </div>
+  </div>
+
+  <div ng-show="repos.length">
+    <div class="table-area">
+      <div class="ca ca-1">
+        <table class="table-1" ts-wrapper>
+          <thead>
+            <tr>
+              <th ts-criteria="name">Repo</th>
+              <!-- <th ts-criteria="name">Repo: <input ng-model="repoFilter.name" type="text"></th> -->
+              <th ts-criteria="createdAt">Create date</th>
+              <th ts-criteria="updatedAt">Last update</th>
+              <th ts-criteria="pushedAt">Last push</th>
+              <th ts-criteria="watchersCount|parseInt">Watchers</th>
+              <th ts-criteria="starsCount|parseInt" ts-default="descending">Stars</th>
+              <th ts-criteria="forksCount|parseInt">Forks</th>
+              <th ts-criteria="openIssuesCount|parseInt">Open issues</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr ng-repeat="repo in repos | filter:repoFilter | orderBy:repoSortField:repoSortOrder" ts-repeat>
+              <td><a ng-href="{{obtainLink(repo.homepage)}}" class="link-1">{{repo.name}}</a></td>
+              <td class="format-date">{{repo.createdAt}}</td>
+              <td class="format-date">{{repo.updatedAt}}</td>
+              <td class="format-date">{{repo.pushedAt}}</td>
+              <td class="format-number">{{repo.watchersCount}}</td>
+              <td class="format-number">{{repo.starsCount}}</td>
+              <td class="format-number">{{repo.forksCount}}</td>
+              <td class="format-number">{{repo.openIssuesCount}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  <!--  <h3>Limits</h3>
+
+    <table border="1" ng-show="rateLimit">
+      <tr>
+        <th>Core limit</th>
+        <th>Core remaining</th>
+        <th>Core reset</th>
+      </tr>
+
+      <tr>
+        <td>{{rateLimit.coreLimit}}</td>
+        <td>{{rateLimit.coreRemaining}}</td>
+        <td>{{rateLimit.coreReset}}</td>
+      </tr>
+    </table> -->
+
+
+  </div>
+</div>

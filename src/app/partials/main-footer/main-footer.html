@@ -1,0 +1,51 @@
+<div class="main-footer-container">
+  <div class="faq-area">
+    <section>
+      <div class="faq-heading-area">
+        <div class="ca ca-1">
+          <h1 class="faq-heading">FAQ</h1>
+        </div>
+      </div>
+
+      <div class="faq-content-area">
+        <div class="ca ca-1">
+          <div class="faq-question-container">
+            <section>
+              <h1 class="faq-question-heading">Why the number of requests is limited?</h1>
+
+              <div class="faq-answer-container">
+                <p>GitHub limits number of API requests to {{rateLimit.coreLimit}} per hour.</p>
+              </div>
+            </section>
+          </div>
+
+          <div class="faq-question-container">
+            <section>
+              <h1 class="faq-question-heading">Why the number of remaining requests does not decrease when I make requests?</h1>
+
+              <div class="faq-answer-container">
+                <p>GitHub caches API calls. The cache for specific repository is being reset when this repository updates.</p>
+              </div>
+            </section>
+          </div>
+
+          <div class="faq-question-container">
+            <section>
+              <h1 class="faq-question-heading">Why there is no search functionality for repositories?</h1>
+
+              <div class="faq-answer-container">
+                <p>GitHub has separate limit for searching - it is only {{rateLimit.searchLimit}} requests per hour, so I decided not to implement front-end search functionality for now. Thus, you have to enter repositories' names manually.</p>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="footer-area">
+    <div class="ca ca-1">
+      <p>Created by <a href="http://lukaszgrolik.pl" class="footer-author-homepage-link">Łukasz Grolik</a></p>
+    </div>
+  </div>
+</div>

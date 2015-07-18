@@ -1,4 +1,5 @@
-app.factory('Repo', [function() {
+angular.module('app')
+.factory('Repo', [function() {
 
 	const DATE_FORMAT = 'YYYY-MM-DD HH:mm';
 

@@ -1,0 +1,252 @@
+@import 'reset';
+
+/**/
+
+*
+{
+	transition: background .2s;
+}
+
+html {
+	/*background: #2C3E50;*/
+	/*background: #1ABC9C;*/
+	background: #34495E;
+	font-family: Raleway, sans-serif;
+}
+
+/**/
+
+.ca
+{
+	padding: 0 1rem;
+	margin: 0 auto;
+}
+
+.ca-1
+{
+	max-width: 1200px;
+}
+
+/**/
+
+@import 'table-1';
+
+/**/
+
+.link-1
+{
+	color: #3498DB;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.link-1:hover
+{
+	text-decoration: underline;
+}
+
+/**/
+
+.special-text-1
+{
+	font-weight: bold;
+}
+
+/**/
+
+.general-error-area
+{
+	background: #E74C3C;
+	color: #fff;
+	padding: 1rem 0;
+}
+
+/**/
+
+.request-repos-form-area
+{
+	/*background: #ddd;*/
+}
+
+.request-repos-form-input-area
+{
+	background: #3498DB;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+}
+
+.request-repos-form-submit-area
+{
+	background: #2980B9;
+}
+
+/**/
+
+.request-repos-form-label
+{
+	color: #fff;
+	font-size: .8rem;
+	font-weight: bold;
+	margin-bottom: .5rem;
+	display: block;
+}
+
+.request-repos-form-input
+{
+	color: #7F8C8D;
+	font-family: monospace;
+	font-size: 1.5rem;
+	padding: .5rem;
+	width: 100%;
+	outline: 0;
+	display: block;
+}
+
+/**/
+
+.repo-list-button-area
+{
+	color: #fff;
+	margin-top: 1rem;
+	display: flex;
+}
+
+.repo-list-button-container
+{
+	font-size: 0.8rem;
+}
+
+.repo-list-button-container:not(:first-child)
+{
+	margin-left: 1rem;
+}
+
+/**/
+
+.repo-list-button-area-heading
+{
+	font-weight: bold;
+	margin-bottom: .5rem;
+}
+
+/**/
+
+.repo-list-button-wrapper-list
+{
+
+}
+
+.repo-list-button-wrapper
+{
+
+}
+
+.repo-list-button-wrapper-list .repo-list-button-wrapper:not(:first-child)
+{
+	margin-top: .25rem;
+}
+
+.repo-list-button
+{
+	cursor: pointer;
+	background: rgba(255, 255, 255, .2);
+	font-family: monospace;
+	padding: .15rem .3rem;
+	display: inline-block;
+}
+
+.repo-list-button:hover
+{
+	background: rgba(255, 255, 255, .3)
+}
+
+/**/
+
+.repo-list-button > ul
+{
+	display: inline-block;
+}
+
+.repo-list-button > ul > li
+{
+	display: inline-block;
+}
+
+.repo-list-button > ul > li:not(:last-child):after
+{
+	content: ',\00A0'; /* comma and non-breaking space - normal space does not work */
+}
+
+/**/
+
+@import 'request-repos-form-submit-area';
+
+/**/
+
+.info-list-1
+{
+	display: flex;
+    flex-wrap: wrap;
+	list-style: square inside;
+}
+
+.info-list-1-item
+{
+    flex-grow: 1;
+	margin: .5rem;
+}
+
+/**/
+
+
+
+/**/
+
+.errors-after-form-submit-area
+{
+	background: #E74C3C;
+	color: #fff;
+	padding: 1rem 0;
+}
+
+.request-repo-error-heading
+{
+	font-weight: bold;
+}
+
+.request-repo-error-list
+{
+	list-style: square inside;
+	margin-top: 1rem;
+}
+
+/**/
+
+.no-table-area
+{
+	background: #fff;
+	color: #7F8C8D;
+	font-size: 1.5rem;
+	text-align: center;
+	padding: 3rem 0;
+}
+
+/**/
+
+.table-area
+{
+	background: #fff;
+	padding: 3rem 0;
+}
+
+/**/
+
+@import 'charts-area';
+
+/**/
+
+@import 'faq-area';
+
+/**/
+
+@import 'footer-area';

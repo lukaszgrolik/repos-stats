@@ -1,0 +1,40 @@
+.faq-area
+{
+  background: #1ABC9C;
+  color: #fff;
+  border-bottom: 1px dashed #fff;
+}
+
+.faq-heading-area
+{
+  background: #16A085;
+  font-size: 1.5rem;
+  /*font-weight: bold;*/
+  padding: 1rem 0;
+}
+
+.faq-content-area
+{
+  padding: 1.5rem;
+}
+
+.faq-question-container
+{
+
+}
+
+.faq-question-container:not(:first-child)
+{
+  margin-top: 1rem;
+}
+
+.faq-question-heading
+{
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.faq-answer-container
+{
+  margin-top: .5rem;
+}

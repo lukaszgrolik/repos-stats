@@ -1,4 +1,5 @@
-app.factory('RateLimit', [function() {
+angular.module('app')
+.factory('RateLimit', [function() {
 
 	function RateLimit(body) {
 		this.coreLimit = body.coreLimit;
