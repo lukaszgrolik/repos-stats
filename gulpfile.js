@@ -254,6 +254,7 @@ tasks.buildDevCoreJs = function() {
   .pipe(gp.plumber())
   .pipe(gp.sourcemaps.init())
   .pipe(gp.wrap(jsWrapCode))
+  // .pipe(gp.babel())
   .pipe(gp.concat('main.js'))
   .pipe(gp.sourcemaps.write('./'))
   .pipe(gulp.dest(paths.devBundle + '/js'));
@@ -264,6 +265,7 @@ tasks.buildProdCoreJs = function() {
   .pipe(gp.plumber())
   .pipe(gp.sourcemaps.init())
   .pipe(gp.wrap(jsWrapCode))
+  // .pipe(gp.babel())
   .pipe(gp.concat('main.min.js'))
   .pipe(gp.ngAnnotate())
   .pipe(gp.uglify())

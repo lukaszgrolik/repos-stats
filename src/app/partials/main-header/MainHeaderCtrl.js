@@ -1,9 +1,11 @@
 angular.module('app.mainHeader')
-.controller('MainHeaderCtrl', function($scope, $http, Repo, RateLimit, UserRecentRequests) {
+.controller('MainHeaderCtrl', function($scope, $http, Repo, RateLimit, UserRecentRequests, statsConfig, chartsStore, reposStore) {
 
   //
   // HELPERS
   //
+
+  $scope.reposStore = reposStore;
 
   $scope.recentComparisons = UserRecentRequests.requests;
   $scope.globalRecentComparisons = [];
@@ -13,10 +15,10 @@ angular.module('app.mainHeader')
   $scope.requestsPerRepo = 1;
   $scope.totalRequests = 0;
 
-  $scope.repos = [];
-  $scope.reposNames = '';
-  $scope.reposNamesCount = obtainReposNamesCount();
-  $scope.repoSortOrder = false;
+  // reposStore.repos = [];
+  // reposStore.reposNames = '';
+  // reposStore.reposNamesCount = obtainReposNamesCount();
+  // reposStore.repoSortOrder = false;
 
   $scope.rateLimit = false;
 
@@ -47,7 +49,7 @@ angular.module('app.mainHeader')
     [
       'sass/sass',
       'less/less.js',
-      'LearnBoost/stylus'
+      'stylus/stylus'
     ],
     [
       'symfony/symfony',
@@ -63,7 +65,7 @@ angular.module('app.mainHeader')
   //
 
   $scope.setRepos = function(repos) {
-    $scope.reposNames = repos.join(', ');
+    reposStore.reposNames = repos.join(', ');
 
     $scope.requestsPerRepo = 1;
 
@@ -71,7 +73,7 @@ angular.module('app.mainHeader')
   }
 
   $scope.loadStatsByForm = function() {
-    if ('' === $scope.reposNames.trim()) {
+    if ('' === reposStore.reposNames.trim()) {
       $scope.requestReposForm.errors.fields.reposNames = {
         type: 'empty'
       }
@@ -79,7 +81,7 @@ angular.module('app.mainHeader')
       return;
     }
 
-    var reposNames = $scope.reposNames.split(',');
+    var reposNames = reposStore.reposNames.split(',');
 
     reposNames.forEach(function(repoName, i) {
       reposNames[i] = repoName.trim();
@@ -93,7 +95,7 @@ angular.module('app.mainHeader')
   }
 
   $scope.loadStats = function(reposNames) {
-    $scope.repos.length = 0;
+    reposStore.repos.length = 0;
     $scope.requestReposForm.errors.fields = {};
     $scope.requestReposForm.errors.requests = {};
     $scope.loadingStats = true;
@@ -131,17 +133,17 @@ angular.module('app.mainHeader')
                   openIssuesCount: data.open_issues_count,
                 };
 
-                $scope.repos.push(new Repo(body));
+                reposStore.repos.push(new Repo(body));
 
-                $scope.stats.forEach(function(stat) {
-                  $scope.charts[stat.name].labels.length = 0;
-                  $scope.charts[stat.name].datasets[0].data.length = 0;
+                statsConfig.forEach(function(stat) {
+                  chartsStore[stat.name].labels.length = 0;
+                  chartsStore[stat.name].datasets[0].data.length = 0;
                 });
 
-                $scope.repos.forEach(function(repo) {
-                  $scope.stats.forEach(function(stat) {
-                    $scope.charts[stat.name].labels.push(repo.name);
-                    $scope.charts[stat.name].datasets[0].data.push(repo[stat.name + 'Count']);
+                reposStore.repos.forEach(function(repo) {
+                  statsConfig.forEach(function(stat) {
+                    chartsStore[stat.name].labels.push(repo.name);
+                    chartsStore[stat.name].datasets[0].data.push(repo[stat.name + 'Count']);
                   });
                 });
 
@@ -226,9 +228,9 @@ angular.module('app.mainHeader')
 
   function watch() {
     $scope.$watch(function() {
-      return $scope.reposNames;
-    }, function() {
-      $scope.reposNamesCount = obtainReposNamesCount();
+      return reposStore.reposNames;
+    }, function(val) {
+      reposStore.reposNamesCount = reposStore.obtainReposNamesCount();
     })
 
 
@@ -238,24 +240,6 @@ angular.module('app.mainHeader')
     }, function() {
       $scope.requestRepoError = Boolean(Object.keys($scope.requestReposForm.errors.requests).length);
     }, true);
-  }
-
-  function obtainReposNamesCount() {
-    // var result = $scope.reposNames.split(',').length;
-    var result = 0;
-    var reposNames = $scope.reposNames.split(',');
-
-    reposNames.forEach(function(repoName, i) {
-      reposNames[i] = repoName.trim();
-
-      if ('' === repoName) {
-        reposNames.splice(i, 1);
-      }
-    });
-
-    result = reposNames.length;
-
-    return result;
   }
 
   function loadRepoStats(repoName, callback) {
@@ -303,12 +287,12 @@ angular.module('app.mainHeader')
     .success(function(data, status, headers, config) {
       $scope.loading = false;
 
-    callback(null, data);
+      callback(null, data);
     })
     .error(function(data, status, headers, config) {
       $scope.loading = false;
 
-    callback({err: true}, null);
+      callback({err: true}, null);
     });
   }
 

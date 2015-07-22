@@ -1,11 +1,11 @@
 <div class="repos-table-area-container">
-  <div ng-hide="repos.length" class="no-table-area">
+  <div ng-hide="reposStore.repos.length" class="no-table-area">
     <div class="ca ca-1">
       <p>Enter and load repositories to see statistics.</p>
     </div>
   </div>
 
-  <div ng-show="repos.length">
+  <div ng-show="reposStore.repos.length">
     <div class="table-area">
       <div class="ca ca-1">
         <table class="table-1" ts-wrapper>
@@ -24,7 +24,7 @@
           </thead>
 
           <tbody>
-            <tr ng-repeat="repo in repos | filter:repoFilter | orderBy:repoSortField:repoSortOrder" ts-repeat>
+            <tr ng-repeat="repo in reposStore.repos | filter:repoFilter | orderBy:repoSortField:repoSortOrder" ts-repeat>
               <td><a ng-href="{{obtainLink(repo.homepage)}}" class="link-1">{{repo.name}}</a></td>
               <td class="format-date">{{repo.createdAt}}</td>
               <td class="format-date">{{repo.updatedAt}}</td>
