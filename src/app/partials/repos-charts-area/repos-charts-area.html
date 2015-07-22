@@ -3,16 +3,35 @@
       <div class="ca ca-1">
         <div class="chart-container-list" >
 
-          <div ng-class="" class="chart-container {{stat.name}}-char-container" ng-repeat="stat in statsConfig">
-            <h3 class="charts-area-heading" style="background-color: {{stat.color}}">
-              <span ng-class="{'fa-eye': stat.name=='watchers', 'fa-star': stat.name=='stars', 'fa-code-fork': stat.name=='forks', 'fa-exclamation-circle': stat.name=='openIssues'}" class="fa"></span>
-              <span>{{stat.label}}</span>
+          <div
+          class="chart-container"
+          ng-repeat="stat in statsConfig"
+          >
+            <h3
+            class="charts-area-heading"
+            ng-style="{'background-color': stat.color}"
+            >
+              <span
+              class="fa"
+              ng-class="{
+                'fa-eye': stat.name=='watchers',
+                'fa-star': stat.name=='stars',
+                'fa-code-fork': stat.name=='forks',
+                'fa-exclamation-circle': stat.name=='openIssues'
+              }"
+              ></span>
+              <span ng-bind="stat.label"></span>
             </h3>
 
             <div class="chart-content">
-              <canvas barchart data="chartsStore[stat.name]" width="500" height="300"></canvas>
+              <canvas barchart
+              data="chartsStore[stat.name]"
+              width="500"
+              height="300"
+              ></canvas>
             </div>
           </div>
+
         </div>
       </div>
     </div>

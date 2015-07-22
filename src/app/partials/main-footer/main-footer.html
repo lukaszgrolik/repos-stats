@@ -9,32 +9,12 @@
 
       <div class="faq-content-area">
         <div class="ca ca-1">
-          <div class="faq-question-container">
+          <div class="faq-question-container" ng-repeat="faqItem in faq">
             <section>
-              <h1 class="faq-question-heading">Why the number of requests is limited?</h1>
+              <h1 class="faq-question-heading" ng-bind="faqItem.question"></h1>
 
               <div class="faq-answer-container">
-                <p>GitHub limits number of API requests to {{rateLimit.coreLimit}} per hour.</p>
-              </div>
-            </section>
-          </div>
-
-          <div class="faq-question-container">
-            <section>
-              <h1 class="faq-question-heading">Why the number of remaining requests does not decrease when I make requests?</h1>
-
-              <div class="faq-answer-container">
-                <p>GitHub caches API calls. The cache for specific repository is being reset when this repository updates.</p>
-              </div>
-            </section>
-          </div>
-
-          <div class="faq-question-container">
-            <section>
-              <h1 class="faq-question-heading">Why there is no search functionality for repositories?</h1>
-
-              <div class="faq-answer-container">
-                <p>GitHub has separate limit for searching - it is only {{rateLimit.searchLimit}} requests per hour, so I decided not to implement front-end search functionality for now. Thus, you have to enter repositories' names manually.</p>
+                <p ng-bind="faqItem.answer"></p>
               </div>
             </section>
           </div>

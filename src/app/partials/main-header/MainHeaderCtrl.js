@@ -1,26 +1,21 @@
 angular.module('app.mainHeader')
-.controller('MainHeaderCtrl', function($scope, $http, Repo, RateLimit, UserRecentRequests, statsConfig, chartsStore, reposStore) {
+.controller('MainHeaderCtrl', function($scope, $http, Repo, RateLimit, UserRecentRequests, statsConfig, chartsStore, reposStore, requestData) {
 
   //
   // HELPERS
   //
 
   $scope.reposStore = reposStore;
+  $scope.requestData = requestData;
 
   $scope.recentComparisons = UserRecentRequests.requests;
-  $scope.globalRecentComparisons = [];
   $scope.loading = false;
   $scope.loadingStats = false;
 
   $scope.requestsPerRepo = 1;
   $scope.totalRequests = 0;
 
-  // reposStore.repos = [];
-  // reposStore.reposNames = '';
-  // reposStore.reposNamesCount = obtainReposNamesCount();
-  // reposStore.repoSortOrder = false;
-
-  $scope.rateLimit = false;
+  requestData.rateLimit = false;
 
   $scope.connectionError = false;
   $scope.limitError = false;
@@ -60,23 +55,19 @@ angular.module('app.mainHeader')
     ]
   ];
 
+  setRepos($scope.comparisonsExamples[0]);
+
   //
   // EVENTS
   //
 
-  $scope.setRepos = function(repos) {
-    reposStore.reposNames = repos.join(', ');
-
-    $scope.requestsPerRepo = 1;
-
-    $scope.totalRequests = $scope.requestsPerRepo * repos.length;
-  }
+  $scope.setRepos = setRepos;
 
   $scope.loadStatsByForm = function() {
     if ('' === reposStore.reposNames.trim()) {
       $scope.requestReposForm.errors.fields.reposNames = {
-        type: 'empty'
-      }
+        type: 'empty',
+      };
 
       return;
     }
@@ -102,8 +93,6 @@ angular.module('app.mainHeader')
 
     UserRecentRequests.add(reposNames);
 
-    // $scope.globalRecentComparisons.$add(angular.copy(reposNames));
-
     async.each(
       reposNames,
       function(repoName, next) {
@@ -111,15 +100,8 @@ angular.module('app.mainHeader')
           [
             // request repo
             function(done) {
-              loadRepoStats(repoName, function(err, data) {
-                if (err) {
-                  $scope.requestReposForm.errors.requests[repoName] = {
-
-                  };
-
-                  return done(err);
-                }
-
+              loadRepoStats(repoName)
+              .then(function(data) {
                 var body = {
                   name: data.full_name,
                   description: data.description,
@@ -148,16 +130,18 @@ angular.module('app.mainHeader')
                 });
 
                 done(null)
+              })
+              .catch(function(err) {
+                $scope.requestReposForm.errors.requests[repoName] = {};
+
+                return done(err);
               });
             },
 
             // request rate limit
             function(done) {
-              loadRateLimit(function(err, data) {
-                if (err) {
-                  return done(err);
-                }
-
+              loadRateLimit()
+              .then(function(data) {
                 var body = {
                   coreLimit: data.resources.core.limit,
                   coreRemaining: data.resources.core.remaining,
@@ -167,11 +151,12 @@ angular.module('app.mainHeader')
                   searchReset: new Date(data.resources.search.reset * 1000),
                 };
 
-                $scope.rateLimit = new RateLimit(body);
-
-                // console.log('$scope.rateLimit', $scope.rateLimit)
+                requestData.rateLimit = new RateLimit(body);
 
                 done(null);
+              })
+              .catch(function(err) {
+                return done(err);
               });
             }
           ],
@@ -200,15 +185,9 @@ angular.module('app.mainHeader')
     watch();
 
     ;(function() {
-      // $scope.globalRecentComparisons = sync.$asArray();
-      $scope.globalRecentComparisons = [];
 
-      loadRateLimit(function(err, data) {
-        if (err) {
-          // return done(err);
-          return;
-        }
-
+      loadRateLimit()
+      .then(function(data) {
         var body = {
           coreLimit: data.resources.core.limit,
           coreRemaining: data.resources.core.remaining,
@@ -218,10 +197,7 @@ angular.module('app.mainHeader')
           searchReset: new Date(data.resources.search.reset * 1000),
         };
 
-        $scope.rateLimit = new RateLimit(body);
-
-
-        // done(null);
+        requestData.rateLimit = new RateLimit(body);
       });
     })();
   }
@@ -242,30 +218,30 @@ angular.module('app.mainHeader')
     }, true);
   }
 
-  function loadRepoStats(repoName, callback) {
+  function setRepos(repos) {
+    reposStore.reposNames = repos.join(', ');
+
+    $scope.requestsPerRepo = 1;
+
+    $scope.totalRequests = $scope.requestsPerRepo * repos.length;
+  }
+
+  function loadRepoStats(repoName) {
     var basePath = 'https://api.github.com';
     var path = basePath + '/repos/' + repoName;
 
-    makeRequest(path, function(err, data) {
-      if (err) {
-        return callback({repo: repoName}, null);
-      }
-
-      callback(null, data);
+    return makeRequest(path)
+    .catch(function(err) {
+      return {repo: repoName};
     });
   }
 
-  function loadRateLimit(callback) {
+  function loadRateLimit() {
     var basePath = 'https://api.github.com';
     var path = basePath + '/rate_limit';
 
-    makeRequest(path, function(err, data) {
-      if (err) {
-        $scope.connectionError = true;
-
-        return callback({error: true}, null);
-      }
-
+    return makeRequest(path)
+    .then(function(data) {
       $scope.connectionError = false;
 
       if (data.resources.core.remaining < 1) {
@@ -274,25 +250,27 @@ angular.module('app.mainHeader')
         $scope.limitError = false;
       }
 
-      callback(null, data);
+      return data;
+    })
+    .catch(function(err) {
+      $scope.connectionError = true;
+
+      return {error: true};
     });
   }
 
-  function makeRequest(path, callback) {
+  function makeRequest(path) {
     $scope.loading = true;
-    // console.log('requested path', path)
 
-    $http
-    .get(path)
-    .success(function(data, status, headers, config) {
-      $scope.loading = false;
-
-      callback(null, data);
+    return $http.get(path)
+    .then(function(data) {
+      return data.data;
     })
-    .error(function(data, status, headers, config) {
+    .catch(function(err) {
+      return {err: true};
+    })
+    .finally(function() {
       $scope.loading = false;
-
-      callback({err: true}, null);
     });
   }
 
