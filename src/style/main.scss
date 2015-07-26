@@ -4,27 +4,27 @@
 
 *
 {
-	transition: background .2s;
+  transition: background .2s;
 }
 
 html {
-	/*background: #2C3E50;*/
-	/*background: #1ABC9C;*/
-	background: #34495E;
-	font-family: Raleway, sans-serif;
+  /*background: #2C3E50;*/
+  /*background: #1ABC9C;*/
+  background: #34495E;
+  font-family: Raleway, sans-serif;
 }
 
 /**/
 
 .ca
 {
-	padding: 0 1rem;
-	margin: 0 auto;
+  padding: 0 1rem;
+  margin: 0 auto;
 }
 
 .ca-1
 {
-	max-width: 1200px;
+  max-width: 1200px;
 }
 
 /**/
@@ -35,98 +35,98 @@ html {
 
 .link-1
 {
-	color: #3498DB;
-	font-weight: bold;
-	text-decoration: none;
+  color: #3498DB;
+  font-weight: bold;
+  text-decoration: none;
 }
 
 .link-1:hover
 {
-	text-decoration: underline;
+  text-decoration: underline;
 }
 
 /**/
 
 .special-text-1
 {
-	font-weight: bold;
+  font-weight: bold;
 }
 
 /**/
 
 .general-error-area
 {
-	background: #E74C3C;
-	color: #fff;
-	padding: 1rem 0;
+  background: #E74C3C;
+  color: #fff;
+  padding: 1rem 0;
 }
 
 /**/
 
 .request-repos-form-area
 {
-	/*background: #ddd;*/
+  /*background: #ddd;*/
 }
 
 .request-repos-form-input-area
 {
-	background: #3498DB;
-	padding-top: 1rem;
-	padding-bottom: 1rem;
+  background: #3498DB;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 .request-repos-form-submit-area
 {
-	background: #2980B9;
+  background: #2980B9;
 }
 
 /**/
 
 .request-repos-form-label
 {
-	color: #fff;
-	font-size: .8rem;
-	font-weight: bold;
-	margin-bottom: .5rem;
-	display: block;
+  color: #fff;
+  font-size: .8rem;
+  font-weight: bold;
+  margin-bottom: .5rem;
+  display: block;
 }
 
 .request-repos-form-input
 {
-	color: #7F8C8D;
-	font-family: monospace;
-	font-size: 1.5rem;
-	padding: .5rem;
-	width: 100%;
-	outline: 0;
-	display: block;
+  color: #7F8C8D;
+  font-family: monospace;
+  font-size: 1.5rem;
+  padding: .5rem;
+  width: 100%;
+  outline: 0;
+  display: block;
 }
 
 /**/
 
 .repo-list-button-area
 {
-	color: #fff;
-	margin-top: 1rem;
-	display: flex;
+  color: #fff;
+  margin-top: 1rem;
+  display: flex;
 }
 
 .repo-list-button-container
 {
-	font-size: 0.8rem;
+  font-size: 0.8rem;
 }
 
 .repo-list-button-container:not(:first-child)
 {
-	margin-left: 1rem;
+  margin-left: 1rem;
 }
 
 /**/
 
 .repo-list-button-area-heading
 {
-	font-weight: bold;
-	margin-bottom: .5rem;
+  font-weight: bold;
+  margin-bottom: .5rem;
 }
 
 /**/
@@ -143,38 +143,38 @@ html {
 
 .repo-list-button-wrapper-list .repo-list-button-wrapper:not(:first-child)
 {
-	margin-top: .25rem;
+  margin-top: .25rem;
 }
 
 .repo-list-button
 {
-	cursor: pointer;
-	background: rgba(255, 255, 255, .2);
-	font-family: monospace;
-	padding: .15rem .3rem;
-	display: inline-block;
+  cursor: pointer;
+  background: rgba(255, 255, 255, .2);
+  font-family: monospace;
+  padding: .15rem .3rem;
+  display: inline-block;
 }
 
 .repo-list-button:hover
 {
-	background: rgba(255, 255, 255, .3)
+  background: rgba(255, 255, 255, .3)
 }
 
 /**/
 
 .repo-list-button > ul
 {
-	display: inline-block;
+  display: inline-block;
 }
 
 .repo-list-button > ul > li
 {
-	display: inline-block;
+  display: inline-block;
 }
 
 .repo-list-button > ul > li:not(:last-child):after
 {
-	content: ',\00A0'; /* comma and non-breaking space - normal space does not work */
+  content: ',\00A0'; /* comma and non-breaking space - normal space does not work */
 }
 
 /**/
@@ -185,15 +185,15 @@ html {
 
 .info-list-1
 {
-	display: flex;
+  display: flex;
     flex-wrap: wrap;
-	list-style: square inside;
+  list-style: square inside;
 }
 
 .info-list-1-item
 {
     flex-grow: 1;
-	margin: .5rem;
+  margin: .5rem;
 }
 
 /**/
@@ -204,39 +204,39 @@ html {
 
 .errors-after-form-submit-area
 {
-	background: #E74C3C;
-	color: #fff;
-	padding: 1rem 0;
+  background: #E74C3C;
+  color: #fff;
+  padding: 1rem 0;
 }
 
 .request-repo-error-heading
 {
-	font-weight: bold;
+  font-weight: bold;
 }
 
 .request-repo-error-list
 {
-	list-style: square inside;
-	margin-top: 1rem;
+  list-style: square inside;
+  margin-top: 1rem;
 }
 
 /**/
 
 .no-table-area
 {
-	background: #fff;
-	color: #7F8C8D;
-	font-size: 1.5rem;
-	text-align: center;
-	padding: 3rem 0;
+  background: #fff;
+  color: #7F8C8D;
+  font-size: 1.5rem;
+  text-align: center;
+  padding: 3rem 0;
 }
 
 /**/
 
 .table-area
 {
-	background: #fff;
-	padding: 3rem 0;
+  background: #fff;
+  padding: 3rem 0;
 }
 
 /**/
