@@ -4,8 +4,10 @@
     "angles": "*",
     "angular": "1.4.3",
     "angular-tablesort": "1.0.7",
-    "async": "1.3.0",
     "font-awesome": "4.3.0",
-    "moment": "2.10.3"
+    "js-data": "2.2.3",
+    "js-data-angular": "3.0.0",
+    "moment": "2.10.3",
+    "underscore": "1.8.3"
   }
 }

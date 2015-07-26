@@ -1,8 +1,8 @@
 vendorStyles: []
 
 vendorScripts:
-  - src: bower_components/async/lib/async.js
-    dist: bower_components/async/dist/async.min.js
+  - src: bower_components/underscore/underscore.js
+    dist: bower_components/underscore/underscore-min.js
   - src: bower_components/moment/moment.js
     dist: bower_components/moment/min/moment.min.js
   - src: bower_components/chartjs/Chart.js

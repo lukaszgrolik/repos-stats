@@ -1,11 +1,11 @@
 <div class="main-header-container">
-  <div ng-show="connectionError || limitError" class="general-error-area">
+  <div ng-if="connectionError || limitError" class="general-error-area">
     <div class="ca ca-1">
-      <div ng-show="connectionError" class="">
+      <div ng-if="connectionError" class="">
         <p>There is a connection problem.</p>
       </div>
 
-      <div ng-show="limitError">
+      <div ng-if="limitError">
         <p>You exceeded GitHub API request limit. Wait until <span ng-bind="requestData.rateLimit.coreReset"></span> when limit will be reset.</p>
       </div>
     </div>
@@ -37,7 +37,7 @@
               </section>
             </div>
 
-            <div ng-show="recentComparisons.length" class="repo-list-button-container">
+            <div ng-if="recentComparisons.length" class="repo-list-button-container">
               <section>
                 <h1 class="repo-list-button-area-heading">Your last requests:</h1>
 
@@ -68,21 +68,21 @@
                 <ul class="info-list-1">
                   <li
                   class="info-list-1-item"
-                  ng-show="reposNamesCount"
+                  ng-if="reposNamesCount"
                   >
-                    <span class="special-text-1" ng-bind="reposNamesCount"></span> request<span ng-show="reposNamesCount > 1">s</span> will be made
+                    <span class="special-text-1" ng-bind="reposNamesCount"></span> request<span ng-if="reposNamesCount > 1">s</span> will be made
                   </li>
 
                   <li
                   class="info-list-1-item"
-                  ng-show="requestData.rateLimit"
+                  ng-if="requestData.rateLimit"
                   >
-                    You have <span ng-show="requestData.rateLimit.coreRemaining == requestData.rateLimit.coreLimit">all</span> <span class="special-text-1" ng-bind="requestData.rateLimit.coreRemaining"></span> remaining request<span ng-show="requestData.rateLimit.coreRemaining > 1">s</span>
+                    You have <span ng-if="requestData.rateLimit.coreRemaining == requestData.rateLimit.coreLimit">all</span> <span class="special-text-1" ng-bind="requestData.rateLimit.coreRemaining"></span> remaining request<span ng-if="requestData.rateLimit.coreRemaining > 1">s</span>
                   </li>
 
                   <li
                   class="info-list-1-item"
-                  ng-show="requestData.rateLimit && requestData.rateLimit.coreRemaining != requestData.rateLimit.coreLimit"
+                  ng-if="requestData.rateLimit && requestData.rateLimit.coreRemaining != requestData.rateLimit.coreLimit"
                   >
                     Requests limit will be reset to <span class="special-text-1" ng-bind="requestData.rateLimit.coreLimit"></span> at <span class="special-text-1" ng-bind="requestData.rateLimit.coreReset"></span>
                   </li>
@@ -93,8 +93,8 @@
             <div class="request-repos-form-submit-area-button-area">
               <button ng-disabled="loadingStats" class="request-repos-form-submit">
                 <span>Load stats</span>
-                <span ng-hide="loadingStats" class="fa fa-cloud-download"></span>
-                <span ng-show="loadingStats" class="fa fa-cog fa-spin"></span>
+                <span ng-if="!loadingStats" class="fa fa-cloud-download"></span>
+                <span ng-if="loadingStats" class="fa fa-cog fa-spin"></span>
               </button>
             </div>
           </div>
@@ -103,7 +103,7 @@
     </form>
   </div>
 
-  <div ng-show="requestRepoError" class="errors-after-form-submit-area">
+  <div ng-if="requestRepoError" class="errors-after-form-submit-area">
     <div class="ca ca-1">
       <section>
         <h1 class="request-repo-error-heading">There have been problems while requesting following repos:</h1>
