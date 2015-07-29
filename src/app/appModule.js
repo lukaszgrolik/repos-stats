@@ -1,6 +1,5 @@
-'use strict';
-
 angular.module('app', [
+  'js-data',
   'angles',
   'tableSort',
   //

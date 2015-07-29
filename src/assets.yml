@@ -5,10 +5,14 @@ vendorScripts:
     dist: bower_components/underscore/underscore-min.js
   - src: bower_components/moment/moment.js
     dist: bower_components/moment/min/moment.min.js
+  - src: bower_components/js-data/dist/js-data.js
+    dist: bower_components/js-data/dist/js-data.min.js
   - src: bower_components/chartjs/Chart.js
     dist: bower_components/chartjs/Chart.min.js
 
   - src: bower_components/angular/angular.js
     dist: bower_components/angular/angular.min.js
+  - src: bower_components/js-data-angular/dist/js-data-angular.js
+    dist: bower_components/js-data-angular/dist/js-data-angular.min.js
   - src: bower_components/angular-tablesort/js/angular-tablesort.js
   - src: bower_components/angles/angles.js

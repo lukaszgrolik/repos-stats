@@ -12,12 +12,20 @@
   </div>
 
   <div class="request-repos-form-area">
-    <form ng-submit="loadStatsByForm()" class="request-repos-form">
+    <form ng-submit="requestForm.submit()" class="request-repos-form">
       <div class="request-repos-form-input-area">
         <div class="ca ca-1">
           <div>
             <label for="repos-names-field" class="request-repos-form-label">Enter GitHub repositories' names in an "owner/repo" format separated by commas:</label>
-            <input ng-model="reposStore.reposNames" type="text" id="repos-names-field" class="request-repos-form-input" required="true" autofocus="true">
+            <input
+            type="text"
+            required="true"
+            autofocus="true"
+            id="repos-names-field"
+            class="request-repos-form-input"
+            xxx-ng-model="reposStore.reposNames"
+            ng-model="requestForm.state.reposNames"
+            >
           </div>
 
           <div class="repo-list-button-area">
@@ -91,10 +99,19 @@
             </div>
 
             <div class="request-repos-form-submit-area-button-area">
-              <button ng-disabled="loadingStats" class="request-repos-form-submit">
+              <button
+              type="submit"
+              class="request-repos-form-submit"
+              ng-disabled="requestForm.pending"
+              >
                 <span>Load stats</span>
-                <span ng-if="!loadingStats" class="fa fa-cloud-download"></span>
-                <span ng-if="loadingStats" class="fa fa-cog fa-spin"></span>
+                <span
+                class="fa"
+                ng-class="{
+                  'fa-cloud-download': !requestForm.pending,
+                  'fa-cog fa-spin': requestForm.pending,
+                }"
+                ></span>
               </button>
             </div>
           </div>
