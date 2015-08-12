@@ -1,11 +1,11 @@
 <div class="main-header-container">
-  <div ng-if="connectionError || limitError" class="general-error-area">
+  <div ng-if="requestForm.connectionError || requestForm.limitError" class="general-error-area">
     <div class="ca ca-1">
-      <div ng-if="connectionError" class="">
+      <div ng-if="requestForm.connectionError" class="">
         <p>There is a connection problem.</p>
       </div>
 
-      <div ng-if="limitError">
+      <div ng-if="requestForm.limitError">
         <p>You exceeded GitHub API request limit. Wait until <span ng-bind="requestData.rateLimit.coreReset"></span> when limit will be reset.</p>
       </div>
     </div>
@@ -76,9 +76,9 @@
                 <ul class="info-list-1">
                   <li
                   class="info-list-1-item"
-                  ng-if="reposNamesCount"
+                  ng-if="reposStore.reposNamesCount"
                   >
-                    <span class="special-text-1" ng-bind="reposNamesCount"></span> request<span ng-if="reposNamesCount > 1">s</span> will be made
+                    <span class="special-text-1" ng-bind="reposStore.reposNamesCount"></span> request<span ng-if="reposStore.reposNamesCount > 1">s</span> will be made
                   </li>
 
                   <li
@@ -129,7 +129,7 @@
       <ul class="request-repo-error-list">
         <li
         class="request-repo-error-item"
-        ng-repeat="(key, val) in requestReposForm.errors.requests"
+        ng-repeat="(key, val) in requestForm.requestReposForm.errors.requests"
         ng-bind="key"
         >
         </li>

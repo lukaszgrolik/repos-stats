@@ -75,6 +75,29 @@ angular.module('app.mainHeader')
     loadRateLimit();
   }
 
+  function loadRateLimit() {
+    return ghApi.getRateLimit()
+    .then(function(data) {
+      this.connectionError = false;
+
+      if (data.resources.core.remaining < 1) {
+        this.limitError = true;
+      } else {
+        this.limitError = false;
+      }
+
+      return data;
+    }.bind(this))
+    .then(function(data) {
+      requestData.rateLimit = new RateLimit(RateLimit.deserialize(data));
+    })
+    .catch(function(err) {
+      this.connectionError = true;
+
+      return {error: true};
+    }.bind(this));
+  }
+
   function initWatchers() {
     $scope.$watch(function() {
       return reposStore.reposNames;

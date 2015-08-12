@@ -12,7 +12,7 @@ angular.module('app.requestForm', function() {
   _(RequestForm.prototype).extend({
     submit: function() {
       if ('' === reposStore.reposNames.trim()) {
-        $scope.requestReposForm.errors.fields.reposNames = {
+        this.requestReposForm.errors.fields.reposNames = {
           type: 'empty',
         };
 
@@ -35,6 +35,7 @@ angular.module('app.requestForm', function() {
   });
 
   function loadStats(reposNames) {
+    console.log('loadStats')
     reposStore.repos.length = 0;
 
     this.errors.fields = {};
@@ -62,6 +63,7 @@ angular.module('app.requestForm', function() {
   }
 
   function loadRepoStats(repoName) {
+    console.log('loadRepoStats')
     return ghApi.getRepo({name: repoName})
     .then(function(data) {
       reposStore.repos.push(new Repo(Repo.deserialize(data)));
@@ -86,26 +88,29 @@ angular.module('app.requestForm', function() {
   }
 
   function loadRateLimit() {
+    console.log('loadRateLimit')
     return ghApi.getRateLimit()
     .then(function(data) {
-      $scope.connectionError = false;
+      this.connectionError = false;
 
       if (data.resources.core.remaining < 1) {
-        $scope.limitError = true;
+        this.limitError = true;
       } else {
-        $scope.limitError = false;
+        this.limitError = false;
       }
 
       return data;
-    })
+    }.bind(this))
     .then(function(data) {
+      console.log('x')
       requestData.rateLimit = new RateLimit(RateLimit.deserialize(data));
     })
     .catch(function(err) {
-      $scope.connectionError = true;
+      console.log('y')
+      this.connectionError = true;
 
       return {error: true};
-    });
+    }.bind(this));
   }
 
   return RequestForm;
